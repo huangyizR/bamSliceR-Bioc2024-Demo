@@ -38,9 +38,6 @@ Imports:
     TxDb.Hsapiens.UCSC.hg38.knownGene,
     VariantTools,
     data.table
-Remotes:
-    trichelab/bamSliceR,
-    Bioconductor/ensemblVEP
 URL: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo
 VignetteBuilder: knitr
 DockerImage: ghcr.io/huangyizR/bamSliceR-Bioc2024-Demo:latest
