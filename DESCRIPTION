@@ -28,6 +28,7 @@ Suggests:
     rmarkdown,
     pkgdown
 Imports:
+    trichelab/bamSliceR
     BiocParallel,
     biomaRt,
     ensemblVEP,
