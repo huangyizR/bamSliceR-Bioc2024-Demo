@@ -1,28 +1,45 @@
-Package: BuildABiocWorkshop
-Title: Bioconductor or R Workshop Template and Github Actions
+Package: bamSliceR-Bioc2024-Demo
+Title: Slicing and Tallied BAMs for Interested Genes and Variant Analysis
 Version: 2.0.1
 Authors@R: 
-    person(given = "Sean",
-           family = "Davis",
+    person(given = "Peter",
+           family = "Huang",
            role = c("aut", "cre"),
-           email = "seandavi@gmail.com",
-           comment = c(ORCID = "0000-0002-8991-6458"))
-Description: This package serves as a template for using github actions to 
-    prepare a Bioconductor Workshop package for use. In particular,
-    a pkgdown website and docker image are generated based on workflow 
-    settings. 
+           email = "peter.huang@vai.org",
+           comment = c(ORCID = "0009-0004-5689-0193"))
+Description:A standardized pipeline for extracting, annotating, and analyzing 
+    genomic variants across large controlled-access repositories and local
+    sequencing data.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Depends: 
-    Biobase
+Depends:
+    R (> 4.0), 
+    Biobase,
+    gmapR,
+    VariantAnnotation,
+    GenomicRanges,
+    plyranges,
+    GenomicDataCommons
 Suggests: 
     knitr,
     rmarkdown,
     pkgdown
-URL: https://seandavi.github.io/BuildABiocWorkshop/
+Imports:
+    BiocParallel,
+    biomaRt,
+    ensemblVEP,
+    Homo.sapiens,
+    httr,
+    jsonlite,
+    stringr,
+    BSgenome.Hsapiens.UCSC.hg38,
+    TxDb.Hsapiens.UCSC.hg38.knownGene,
+    VariantTools,
+    data.table
+URL: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo/
 BugReports: https://github.com/seandavi/BuildABiocWorkshop/issues/new/choose
 VignetteBuilder: knitr
 DockerImage: ghcr.io/seandavi/buildabiocworkshop:latest
