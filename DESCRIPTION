@@ -28,10 +28,10 @@ Suggests:
     rmarkdown,
     pkgdown
 Imports:
-    trichelab/bamSliceR
+    trichelab/bamSliceR,
     BiocParallel,
     biomaRt,
-    ensemblVEP,
+    Bioconductor/ensemblVEP,
     Homo.sapiens,
     httr,
     jsonlite,
