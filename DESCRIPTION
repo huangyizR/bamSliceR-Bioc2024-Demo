@@ -15,9 +15,6 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Remotes:
-    trichelab/bamSliceR,
-    Bioconductor/ensemblVEP
 Depends:
     Biobase,
     gmapR,
@@ -40,6 +37,8 @@ Imports:
     TxDb.Hsapiens.UCSC.hg38.knownGene,
     VariantTools,
     data.table
+Remotes:
+    trichelab/bamSliceR
 URL: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo
 VignetteBuilder: knitr
 DockerImage: ghcr.io/huangyizR/bamSliceR-Bioc2024-Demo:latest
