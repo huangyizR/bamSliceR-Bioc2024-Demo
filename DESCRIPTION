@@ -7,16 +7,17 @@ Authors@R:
            role = c("aut", "cre"),
            email = "peter.huang@vai.org",
            comment = c(ORCID = "0009-0004-5689-0193"))
-Description:A standardized pipeline for extracting, annotating, and analyzing 
-    genomic variants across large controlled-access repositories and local
-    sequencing data.
+Description: This package serves as a template for using github actions to 
+    prepare a Bioconductor Workshop package for use. In particular,
+    a pkgdown website and docker image are generated based on workflow 
+    settings. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Depends:
-    Biobase,
+Depends: 
+    Biobase
 Suggests: 
     knitr,
     rmarkdown,
