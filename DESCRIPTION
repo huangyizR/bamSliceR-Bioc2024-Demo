@@ -1,4 +1,4 @@
-Package: bamSliceR-Bioc2024-Demo
+Package: bamSliceR.Bioc2024.Demo
 Title: Slicing and Tallied BAMs for Interested Genes and Variant Analysis
 Version: 2.0.1
 Authors@R: 
