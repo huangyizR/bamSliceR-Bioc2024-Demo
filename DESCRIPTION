@@ -36,8 +36,7 @@ Imports:
     BSgenome.Hsapiens.UCSC.hg38,
     TxDb.Hsapiens.UCSC.hg38.knownGene,
     VariantTools,
-    data.table
-Remotes:
+    data.table,
     trichelab/bamSliceR
 URL: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo
 VignetteBuilder: knitr
