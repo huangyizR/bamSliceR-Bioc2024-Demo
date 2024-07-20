@@ -22,6 +22,8 @@ Suggests:
     rmarkdown,
     pkgdown
 Imports:
+    devtools
+Remotes:
     trichelab/bamSliceR
 URL: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo
 VignetteBuilder: knitr
