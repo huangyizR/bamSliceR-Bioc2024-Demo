@@ -1,9 +1,80 @@
 ---
 title: "How to generate annotation GFF file Compatible with Transcriptome Alignment"
-author: "trichelab"
-date: "06/27/2024"
-output: github_document
+author:
+  - name: Peter Huang
+    affiliation: Van Andel Institute/Michigan State University
+date: "16 July 2024"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    fig_caption: true
+bibliography: document.bib
+csl: bioinformatics.csl
+link-citations: true
+vignette: >
+  %\VignetteIndexEntry{BamSliceRWorkFlow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
+
+# Abstract
+analysis. We will use the cell line mixture data from Tian *et al.*
+[@tianComprehensiveCharacterizationSinglecell2021].
+
+# Introduction
+lower throughput, to accommodate this, we profile a smaller sub-sample of cells 
+in our *FLT-seq* protocol[@tianComprehensiveCharacterizationSinglecell2021]:
+![](FLT-seq.png){width=800px}
+
+There are also many other protocols that combine single-cell with long-read
+sequencing, including *scRaCH-seq* which profiles gene panel
+[@pengSinglecellRapidCapture2024], *LR-Split-seq* which uses combinatorial
+barcoding and does not require microfluidic equipments
+[@rebboahMappingModelingGenomic2021].
+
+# Set-up
+
+```{r setup0, message=FALSE, echo = FALSE}
+options(digits=3)
+options(width=90)
+```
+
+```{r downloads, message=FALSE}
+```
+
+```{r setup, eval=TRUE, message=FALSE}
+library(rtracklayer)
+library(bamSliceR)
+```
+
+# `FLAMES` pipeline
+
+## Read pre-processing
+
+## Alignment
+
+# Data pre-processing 
+
+# Mutation analysis 
+
+## Mutation discovery
+
+## Mutation calling
+
+# Differential Transcript Experssion analysis
+
+# remove lowly expressed isoforms
+
+# visualize the pseudo-bulk samples
+
+# Differential Transcript Usage analysis
+
+```{r softwareinfo}
+sessionInfo()
+```
+
+# References
+
 
 ```{r global_options}
 knitr::opts_chunk$set(fig.path='Figs/gff.parse/')
@@ -19,8 +90,6 @@ based on the given genomic coordinates. The function would maintain the internal
 the hierarchy of the features for each genes.)
 
 ```{r message=FALSE,  warning=FALSE, echo='hide'}
-library(rtracklayer)
-library(bamSliceR)
 coords.column.names = c("seqid", "type", "start", "end", "gene_name")
 
 gencode.v36.file = system.file("extdata", "gencode.v36.annotation.subset.gff3", 
