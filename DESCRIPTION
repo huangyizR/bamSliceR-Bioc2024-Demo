@@ -17,12 +17,26 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends:
     Biobase,
+    gmapR,
+    VariantAnnotation,
+    GenomicRanges,
+    plyranges,
+    GenomicDataCommons
 Suggests: 
     knitr,
     rmarkdown,
     pkgdown
 Imports:
-    devtools
+    BiocParallel,
+    biomaRt,
+    Homo.sapiens,
+    httr,
+    jsonlite,
+    stringr,
+    BSgenome.Hsapiens.UCSC.hg38,
+    TxDb.Hsapiens.UCSC.hg38.knownGene,
+    VariantTools,
+    data.table,
 URL: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo
 VignetteBuilder: knitr
 DockerImage: ghcr.io/huangyizR/bamSliceR-Bioc2024-Demo:latest
