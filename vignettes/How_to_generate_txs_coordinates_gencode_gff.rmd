@@ -40,9 +40,10 @@ options(width=90)
 ```{r downloads, message=FALSE}
 ```
 
-```{r setup, eval=TRUE, message=FALSE}
+```{r setup, eval=TRUE, message=TRUE}
 library(rtracklayer)
-library(bamSliceR)
+print(.libPaths())
+
 ```
 
 # `FLAMES` pipeline
