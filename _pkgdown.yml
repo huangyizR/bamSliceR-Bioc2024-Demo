@@ -14,5 +14,24 @@ navbar:
   right:
    - icon: fa-github
      href: https://github.com/huangyizR/bamSliceR-Bioc2024-Demo
+  components:
+    vignettes:
+      text: Vignettes
+      menu:
+        - text: bamSliceR package demo
+          href: articles/bamSliceR.html
+      icon:
+      href:
+
+    github:
+      text:
+      menu:
+      icon: fa-github
+      href: https://github.com/huangyizR/bamSliceR-Bioc2024-Demo
+    gtihub:
+      text:
+      menu:
+      icon: fa-book
+      href: https://github.com/trichelab/bamSliceR
      
 

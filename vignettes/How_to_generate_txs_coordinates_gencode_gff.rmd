@@ -41,7 +41,6 @@ options(width=90)
 ```
 
 ```{r setup, eval=TRUE, message=TRUE}
-library(rtracklayer)
 print(.libPaths())
 
 ```
