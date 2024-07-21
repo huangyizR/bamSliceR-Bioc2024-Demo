@@ -3,7 +3,7 @@ pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   How_to_generate_txs_coordinates_gencode_gff: How_to_generate_txs_coordinates_gencode_gff.html
-last_built: 2024-07-21T20:52Z
+last_built: 2024-07-21T21:17Z
 urls:
   reference: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo/reference
   article: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo/articles
