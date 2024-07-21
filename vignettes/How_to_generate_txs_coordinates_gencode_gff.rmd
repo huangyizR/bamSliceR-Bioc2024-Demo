@@ -89,18 +89,18 @@ based on the given genomic coordinates. The function would maintain the internal
 the hierarchy of the features for each genes.)
 
 ```{r message=FALSE,  warning=FALSE, echo='hide'}
-coords.column.names = c("seqid", "type", "start", "end", "gene_name")
+#coords.column.names = c("seqid", "type", "start", "end", "gene_name")
 
-gencode.v36.file = system.file("extdata", "gencode.v36.annotation.subset.gff3", 
-                             package = "bamSliceR")
-gencode.v36.df = readGFF(gencode.v36.file)
-gencode.v36.df[,coords.column.names]
+#gencode.v36.file = system.file("extdata", "gencode.v36.annotation.subset.gff3", 
+#                             package = "bamSliceR")
+#gencode.v36.df = readGFF(gencode.v36.file)
+#gencode.v36.df[,coords.column.names]
 ```
 
 ### Generate gencode.v36.transcripts.annotation
 
 ```{r message=FALSE,  warning=FALSE, echo='hide'}
-genomic.column.names = c("g_seqid", "g_start", "g_end")
-get_txs_coords_of_gff( gencode.file = gencode.v36.file, isSaveGenomicCoords = TRUE) -> gencode.v36.transcripts.df
-gencode.v36.transcripts.df[,c(coords.column.names, genomic.column.names)]
+#genomic.column.names = c("g_seqid", "g_start", "g_end")
+#get_txs_coords_of_gff( gencode.file = gencode.v36.file, isSaveGenomicCoords = TRUE) -> gencode.v36.transcripts.df
+#gencode.v36.transcripts.df[,c(coords.column.names, genomic.column.names)]
 ```
