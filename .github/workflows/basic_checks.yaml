@@ -38,6 +38,8 @@ jobs:
           BiocManager::repositories()
           remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
           remotes::install_cran("rcmdcheck")
+          options(repos = BiocManager::repositories())
+          devtools::install_github('trichelab/bamSliceR')
         shell: Rscript {0}
 
       - name: Check
