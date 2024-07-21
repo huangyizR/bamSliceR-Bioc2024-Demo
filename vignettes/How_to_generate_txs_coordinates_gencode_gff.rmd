@@ -8,8 +8,6 @@ output:
   rmarkdown::html_vignette:
     toc: true
     fig_caption: true
-bibliography: document.bib
-csl: bioinformatics.csl
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{BamSliceRWorkFlow}
