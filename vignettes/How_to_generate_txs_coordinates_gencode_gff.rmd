@@ -1,5 +1,5 @@
 ---
-title: "How to generate annotation GFF file Compatible with Transcriptome Alignment"
+title: "BamSliceRWorkFlow"
 author:
   - name: Peter Huang
     affiliation: Van Andel Institute/Michigan State University
