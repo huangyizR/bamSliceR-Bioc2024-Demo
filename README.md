@@ -1,6 +1,6 @@
 # BamSliceR: Slicing and Tallied BAMs for Interested Genes and Variant Analysis
 
-The rendered vignette is available at [Gethub pages] (https://huangyizr.github.io/bamSliceR-Bioc2024-Demo/articles/How_to_generate_txs_coordinates_gencode_gff.html)
+The rendered vignette is available at [Gethub pages] (https://huangyizr.github.io/bamSliceR-Bioc2024-Demo/articles/BamSliceR.Bioc2024.html)
 
 ## Docker image
 

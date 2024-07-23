@@ -2,7 +2,7 @@
 title: "Slicing and Tallied BAMs for Interested Genes and Variant Analysis"
 author:
     name: Peter Huang
-    affiliation: Van Andel InstituteMichigan State University
+    affiliation: Van Andel Institute, Michigan State University
 date: "13 July 2024"
 output: 
   rmarkdown::html_vignette:
@@ -46,7 +46,7 @@ and reanalyze raw sequence data, which is highly inefficient.
 
 # `bamSliceR` pipeline
 
-![](bamSliceR_workflow.png){width=550px height=432}
+![](bamSliceR_workflow.png){width=550px height=432px}
 
 # Set-up
 
@@ -71,7 +71,7 @@ identifying the metadata of BAM files, followed by downloading the sliced BAM.
 
 ![Graph Representation of the GDC Data Model](GDC_data_model.png){width=550px}
 
-#### Identify the BAM file of interest
+### Identify the BAM file of interest
 We simplified the querying process in a single function to gather BAM files 
 information from the project of interest. 
 
@@ -96,7 +96,7 @@ availableProjectId() %>% head(n = 10)
 availableExpStrategy("TARGET-AML")
 availableWorkFlow(projectId = "TARGET-AML", es = "RNA-Seq")
 ```
-#### Identify the Genomic Ranges of interest
+### Identify the Genomic Ranges of interest
 BAM slicing API from GDC portal accept genomic ranges specifying as vector of 
 character() e.g., c("chr", "chr1:10000"). Here we provide a function to get the 
 required input format given the gene names.
@@ -120,22 +120,21 @@ target_ranges_chars = getGenesCoordinates(target_genes, ret ="DF",
 head(target_ranges_chars)
 ```
 
-#### Download sliced-BAM
+### Download sliced-BAM
 ```{r download, message=FALSE, eval = FALSE}
 downloadSlicedBAMs(file_df = file_meta, 
                    regions = target_ranges_chars, 
                    dir = "BAM_FILES")
 ```
 
+![](Disk_Space.png){width=550px}
+
 ## Tally Variants from sliced BAMs
-`bamSliceR` integrated functionality in Bioconductor package `gmapR` to tally 
-coverage and counts of variant alleles followed by estimation of Variant Allele 
-Fraction (VAF) of each variants.
+`bamSliceR` integrated functionality in Bioconductor package `gmapR` [@noauthor_undated-an] 
+to tally coverage and counts of variant alleles followed by estimation of Variant 
+Allele Fraction (VAF) of each variants.
 
-```{r tallyreads, eval=TRUE}
-```
-
-#### Identify the Genomic Ranges of interest
+### Identify the Genomic Ranges of interest
 We first also need to specify the regions as a `GRanges` object, which can be
 a subset of genomic ranges used to sliced BAM files.
 
@@ -143,12 +142,12 @@ a subset of genomic ranges used to sliced BAM files.
 head(target_ranges_gr)
 ```
 
-#### Specify list of BAM files 
+### Specify list of BAM files 
 Then we need make a text file to include all the names of downloaded 
 BAM files.
 
 ![bamfiles](bamfiles.png){width=400px height=200px}
-
+terminal `command`
 ```{bash, eval=FALSE}
 cd DIR_BAM_FILES
 ls | grep bam$ > bamfiles
@@ -161,7 +160,7 @@ bamfiles_txt = system.file("extdata", "bamfiles", package = "bamSliceR")
 bamfiles = scan(bamfiles_txt, "character")
 ```
 
-#### Preparing `gmapGenome` Object
+### Preparing `gmapGenome` Object
 Last thing we need is to create a `gmapGenome` object, then specify the directory 
 of it.
 
@@ -180,7 +179,7 @@ gmapGenome <- GmapGenome(genome=Hsapiens,
                          name="hg38", create=TRUE) 
 ```
 
-#### Tallying Reads
+### Tallying Reads
 We can then start to tally the reads of BAM files.
 If you want to run `tallyReads` on machine with multiple nodes, there are 
 parameters to distribute the nodes according to number of BAM files and 
@@ -207,13 +206,14 @@ We also provide a bash template to run `tallyReads()` on HPC on large cohorts.
 ## Annotation of Variants tallied from Genomic BAM files
 
 ### Annotation of Variants 
-A VRanges object will be generated from tallying reads from BAM files, contains 
-all the putative variants. sampleNames() can be used to see the name of BAM files 
+A `VRanges` object will be generated from tallying reads from BAM files, contains 
+all the putative variants. `sampleNames()` can be used to see the name of BAM files 
 which variants detected from. Here, We present an example on how to annotate 
 variants with predicted consequence using
 [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html) and Ensembl Variant Effect Predictor ([VEP](https://useast.ensembl.org/info/docs/tools/vep/index.html)). 
 
-We started from a VRanges output from tallyReads().
+We started from a `VRanges` output from `tallyReads()`.
+
 ```{r message=FALSE,  warning=FALSE, echo='hide'}
 library(bamSliceR)
 tallied_reads = system.file("extdata", "tallied_reads_example.rds", 
@@ -233,7 +233,7 @@ tallied_reads_vrinfo_baminfo = subset(tallied_reads_vrinfo_baminfo, VAF > 0.05)
 
 ```
 
-#### VariantAnnotation ####
+### VariantAnnotation ###
 Consequence of variants now can be predicted using [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html):
 
 ```{r message=FALSE,  warning=FALSE, echo='hide'}
@@ -241,7 +241,7 @@ Consequence of variants now can be predicted using [VariantAnnotation](https://b
 getVariantAnnotation(tallied_reads_vrinfo_baminfo) -> tallied_reads_vrinfo_baminfo_gr
 
 ```
-#### Ensembl Variant Effect Predictor (VEP) ####
+### Ensembl Variant Effect Predictor (VEP) ###
 Consequence of variants also can be predicted using Variant Effect Predictor ([VEP](https://useast.ensembl.org/info/docs/tools/vep/index.html)).
 The code below shows how to generate VCF file as input for VEP:
 ```{r message=FALSE,  warning=FALSE, echo='hide'}
@@ -268,11 +268,11 @@ tallied_reads_vrinfo_baminfo_annotated_gr = getVEPAnnotation(tallied_reads_vrinf
 ```
 
 ### Visualization
-To facilitate downstream analysis of variants from patients, bamSliceR provides 
-customized plotVAF() function based on the maftools::plotVaF() from [maftools](https://www.bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html)
+To facilitate downstream analysis of variants from patients, `bamSliceR` provides 
+customized plotVAF() function based on the `maftools::plotVaF()` from [maftools](https://www.bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html)
 to help user to investigate the Variant Allele Frequency of the selected variants.
 
-#### Distribution of VAF 
+### Distribution of VAF 
 
 By default, the plotVAF would plot the distribution of VAF in top genes.
 ```{r message=FALSE,  warning=FALSE, echo='hide' }
@@ -286,7 +286,7 @@ plotVAF(tallied_reads_vrinfo_baminfo_annotated_gr, title = "Default: VAF of Top 
 
 ```
 
-By specifying single gene and multiple coordinates against the gene products, the plotVAF()
+By specifying single gene and multiple coordinates against the gene products, the `plotVAF()`
 would plot distribution of VAF in selected loci of the gene.
 ```{r message=FALSE,  warning=FALSE, echo='hide' }
 plotVAF(tallied_reads_vrinfo_baminfo_annotated_gr, genes = "IDH2", 
@@ -294,7 +294,7 @@ plotVAF(tallied_reads_vrinfo_baminfo_annotated_gr, genes = "IDH2",
 
 ```
 
-By specifying multiple genes and single coordinate against the genes' products, the plotVAF()
+By specifying multiple genes and single coordinate against the genes' products, the `plotVAF()`
 would plot distribution of VAF in selected loci of the gene.
 ```{r message=FALSE,  warning=FALSE, echo='hide' }
 histone_genes <- c(
@@ -318,9 +318,11 @@ plotVAF (tallied_reads_vrinfo_baminfo_annotated_gr,
 
 ### Covert to MAF file format
 
-Also, bamSliceR provides utility that allow conversion of GRanges to MAF format 
-file, which is compatible with maftools. Oncoplots, survival analysis, and mutual 
+Also, `bamSliceR` provides utility that allow conversion of `GRanges` to `MAF` format 
+file, which is compatible with `maftools`. Oncoplots, survival analysis, and mutual 
 exclusive test, etc, can then be implemented easily.
+
+![](maftools.figures.png){width=550px}
 
 # Working with Transcriptome BAM files
 
@@ -333,6 +335,7 @@ disease-associated effects of these variants.
 We implemented in the `bamSliceR` to facilitate transcript-aware variants 
 annotation using transcriptome BAM that generated by aligning reads from RNA-seq 
 to reference transcripts sequences (GENCODE v36)[https://www.gencodegenes.org/human/release_36.html].
+
 ```{r message=FALSE,  warning=FALSE, echo='hide'}
 library(rtracklayer)
 library(bamSliceR)

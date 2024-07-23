@@ -1,9 +1,8 @@
 url: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo
 
 template:
-  params:
-    bootswatch: flatly
-    #ganalytics: UA-99999999-9
+  bootstrap: 5
+  bootswatch: flatly
 
 home:
   title: "bamSliceR package demo"
@@ -11,9 +10,10 @@ home:
 
 
 navbar:
-  right:
-   - icon: fa-github
-     href: https://github.com/huangyizR/bamSliceR-Bioc2024-Demo
+  structure:
+    left: [vignettes]
+    right: [github]
+
   components:
     vignettes:
       text: Vignettes
@@ -27,11 +27,6 @@ navbar:
       text:
       menu:
       icon: fa-github
-      href: https://github.com/huangyizR/bamSliceR-Bioc2024-Demo
-    gtihub:
-      text:
-      menu:
-      icon: fa-book
       href: https://github.com/trichelab/bamSliceR
      
 
