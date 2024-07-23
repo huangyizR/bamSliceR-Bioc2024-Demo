@@ -22,6 +22,8 @@ Depends:
     GenomicRanges,
     plyranges,
     GenomicDataCommons,
+    bamSliceR
+Remotes:
     trichelab/bamSliceR
 Suggests: 
     knitr,
@@ -40,9 +42,6 @@ Imports:
     TxDb.Hsapiens.UCSC.hg38.knownGene,
     VariantTools,
     data.table,
-    trichelab/bamSliceR
-Remotes:
-    trichelab/bamSliceR
 URL: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo
 VignetteBuilder: knitr
 DockerImage: ghcr.io/huangyizR/bamSliceR-Bioc2024-Demo:latest
