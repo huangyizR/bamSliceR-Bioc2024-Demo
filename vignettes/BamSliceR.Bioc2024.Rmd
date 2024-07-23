@@ -44,6 +44,10 @@ assuming a single best method for variant detection fits all experimental
 designs—a notion contradicted by various benchmarks. Alternatively, retrieving
 and reanalyze raw sequence data, which is highly inefficient.
 
+# `bamSliceR` pipeline
+
+![](bamSliceR_workflow.png){width=550px height=432}
+
 # Set-up
 
 ```{r setup0, message=FALSE, echo = FALSE}
@@ -57,8 +61,6 @@ library(rtracklayer)
 library(parallel)
 library(ggplot2)
 ```
-
-# `bamSliceR` pipeline
 
 # Working with Genomic BAM files
 
