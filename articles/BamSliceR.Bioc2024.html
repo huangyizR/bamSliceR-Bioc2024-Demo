@@ -4,86 +4,62 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Slicing and Tallied BAMs for Interested Genes and Variant Analysis • bamSliceR.Bioc2024.Demo</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Slicing and Tallied BAMs for Interested Genes and Variant Analysis">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Slicing and Tallied BAMs for Interested Genes and Variant Analysis">
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">bamSliceR.Bioc2024.Demo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.1</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
+    <a class="navbar-brand me-2" href="../index.html">bamSliceR.Bioc2024.Demo</a>
 
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/BamSliceR.Bioc2024.html">Slicing and Tallied BAMs for Interested Genes and Variant Analysis</a>
-    </li>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-vignettes" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Vignettes</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-vignettes">
+<li><a class="dropdown-item" href="../articles/bamSliceR.html">bamSliceR package demo</a></li>
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/huangyizR/bamSliceR-Bioc2024-Demo" class="external-link">
-    <span class="fa fa-github"></span>
-
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/trichelab/bamSliceR"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
 
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Slicing and Tallied BAMs for Interested Genes
-and Variant Analysis</h1>
+
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+
+      <h1>Slicing and Tallied BAMs for Interested Genes and Variant Analysis</h1>
                         <h4 data-toc-skip class="author">Peter
 Huang</h4>
             <address class="author_afil">
-      Van Andel InstituteMichigan State University<br><h4 data-toc-skip class="date">13 July 2024</h4>
+      Van Andel Institute, Michigan State
+University<br><h4 data-toc-skip class="date">13 July 2024</h4>
       
 
-      <div class="hidden name"><code>BamSliceR.Bioc2024.Rmd</code></div>
-
+      <div class="d-none name"><code>BamSliceR.Bioc2024.Rmd</code></div>
     </address>
 </div>
 
@@ -155,9 +131,9 @@ sliced BAM.</p>
 <div class="float">
 <img src="GDC_data_model.png" width="550" alt="Graph Representation of the GDC Data Model"><div class="figcaption">Graph Representation of the GDC Data Model</div>
 </div>
-<div class="section level5">
-<h5 id="identify-the-bam-file-of-interest">Identify the BAM file of interest<a class="anchor" aria-label="anchor" href="#identify-the-bam-file-of-interest"></a>
-</h5>
+<div class="section level4">
+<h4 id="identify-the-bam-file-of-interest">Identify the BAM file of interest<a class="anchor" aria-label="anchor" href="#identify-the-bam-file-of-interest"></a>
+</h4>
 <p>We simplified the querying process in a single function to gather BAM
 files information from the project of interest.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -240,9 +216,9 @@ portal, which can be inspected by <code><a href="https://rdrr.io/pkg/bamSliceR/m
 <span><span class="co">## 5      3225        STAR 2-Pass Genome</span></span>
 <span><span class="co">## 6      3225 STAR 2-Pass Transcriptome</span></span></code></pre>
 </div>
-<div class="section level5">
-<h5 id="identify-the-genomic-ranges-of-interest">Identify the Genomic Ranges of interest<a class="anchor" aria-label="anchor" href="#identify-the-genomic-ranges-of-interest"></a>
-</h5>
+<div class="section level4">
+<h4 id="identify-the-genomic-ranges-of-interest">Identify the Genomic Ranges of interest<a class="anchor" aria-label="anchor" href="#identify-the-genomic-ranges-of-interest"></a>
+</h4>
 <p>BAM slicing API from GDC portal accept genomic ranges specifying as
 vector of character() e.g., c(“chr”, “chr1:10000”). Here we provide a
 function to get the required input format given the gene names.</p>
@@ -279,25 +255,26 @@ genes.</p>
 <pre><code><span><span class="co">## [1] "chr20:32358230-32439419"  "chr2:25733653-25878587"   "chr2:25227755-25342690"  </span></span>
 <span><span class="co">## [4] "chr1:226061751-226072119" "chr6:26020351-26021058"   "chr6:27809951-27811400"</span></span></code></pre>
 </div>
-<div class="section level5">
-<h5 id="download-sliced-bam">Download sliced-BAM<a class="anchor" aria-label="anchor" href="#download-sliced-bam"></a>
-</h5>
+<div class="section level4">
+<h4 id="download-sliced-bam">Download sliced-BAM<a class="anchor" aria-label="anchor" href="#download-sliced-bam"></a>
+</h4>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/downloadSlicedBAMs.html" class="external-link">downloadSlicedBAMs</a></span><span class="op">(</span>file_df <span class="op">=</span> <span class="va">file_meta</span>, </span>
 <span>                   regions <span class="op">=</span> <span class="va">target_ranges_chars</span>, </span>
 <span>                   dir <span class="op">=</span> <span class="st">"BAM_FILES"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Disk_Space.png" width="550"></p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="tally-variants-from-sliced-bams">Tally Variants from sliced BAMs<a class="anchor" aria-label="anchor" href="#tally-variants-from-sliced-bams"></a>
 </h3>
 <p><code>bamSliceR</code> integrated functionality in Bioconductor
-package <code>gmapR</code> to tally coverage and counts of variant
-alleles followed by estimation of Variant Allele Fraction (VAF) of each
-variants.</p>
-<div class="section level5">
-<h5 id="identify-the-genomic-ranges-of-interest-1">Identify the Genomic Ranges of interest<a class="anchor" aria-label="anchor" href="#identify-the-genomic-ranges-of-interest-1"></a>
-</h5>
+package <code>gmapR</code> <span class="citation">(<a href="#ref-noauthor_undated-an">gmapR</a>)</span> to tally coverage and
+counts of variant alleles followed by estimation of Variant Allele
+Fraction (VAF) of each variants.</p>
+<div class="section level4">
+<h4 id="identify-the-genomic-ranges-of-interest-1">Identify the Genomic Ranges of interest<a class="anchor" aria-label="anchor" href="#identify-the-genomic-ranges-of-interest-1"></a>
+</h4>
 <p>We first also need to specify the regions as a <code>GRanges</code>
 object, which can be a subset of genomic ranges used to sliced BAM
 files.</p>
@@ -315,14 +292,13 @@ files.</p>
 <span><span class="co">##   -------</span></span>
 <span><span class="co">##   seqinfo: 8 sequences from an unspecified genome; no seqlengths</span></span></code></pre>
 </div>
-<div class="section level5">
-<h5 id="specify-list-of-bam-files">Specify list of BAM files<a class="anchor" aria-label="anchor" href="#specify-list-of-bam-files"></a>
-</h5>
+<div class="section level4">
+<h4 id="specify-list-of-bam-files">Specify list of BAM files<a class="anchor" aria-label="anchor" href="#specify-list-of-bam-files"></a>
+</h4>
 <p>Then we need make a text file to include all the names of downloaded
 BAM files.</p>
-<div class="float">
-<img src="bamfiles.png" width="400" height="200" alt="bamfiles"><div class="figcaption">bamfiles</div>
-</div>
+<p><img src="bamfiles.png" width="400" height="200" alt="bamfiles">
+terminal <code>command</code></p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="bu">cd</span> DIR_BAM_FILES</span>
 <span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="fu">ls</span> <span class="kw">|</span> <span class="fu">grep</span> bam$ <span class="op">&gt;</span> bamfiles</span></code></pre></div>
 <p>In the directory of the downloaded BAM files, we then
@@ -331,9 +307,9 @@ BAM files.</p>
 <code class="sourceCode R"><span><span class="va">bamfiles_txt</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"bamfiles"</span>, package <span class="op">=</span> <span class="st">"bamSliceR"</span><span class="op">)</span></span>
 <span><span class="va">bamfiles</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/scan.html" class="external-link">scan</a></span><span class="op">(</span><span class="va">bamfiles_txt</span>, <span class="st">"character"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level5">
-<h5 id="preparing-gmapgenome-object">Preparing <code>gmapGenome</code> Object<a class="anchor" aria-label="anchor" href="#preparing-gmapgenome-object"></a>
-</h5>
+<div class="section level4">
+<h4 id="preparing-gmapgenome-object">Preparing <code>gmapGenome</code> Object<a class="anchor" aria-label="anchor" href="#preparing-gmapgenome-object"></a>
+</h4>
 <p>Last thing we need is to create a <code>gmapGenome</code> object,
 then specify the directory of it.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
@@ -350,9 +326,9 @@ then specify the directory of it.</p>
 <span>                         directory<span class="op">=</span><span class="va">gmapGenomeDirectory</span>,</span>
 <span>                         name<span class="op">=</span><span class="st">"hg38"</span>, create<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> </span></code></pre></div>
 </div>
-<div class="section level5">
-<h5 id="tallying-reads">Tallying Reads<a class="anchor" aria-label="anchor" href="#tallying-reads"></a>
-</h5>
+<div class="section level4">
+<h4 id="tallying-reads">Tallying Reads<a class="anchor" aria-label="anchor" href="#tallying-reads"></a>
+</h4>
 <p>We can then start to tally the reads of BAM files. If you want to run
 <code>tallyReads</code> on machine with multiple nodes, there are
 parameters to distribute the nodes according to number of BAM files and
@@ -387,13 +363,14 @@ HPC on large cohorts.</p>
 <div class="section level4">
 <h4 id="annotation-of-variants">Annotation of Variants<a class="anchor" aria-label="anchor" href="#annotation-of-variants"></a>
 </h4>
-<p>A VRanges object will be generated from tallying reads from BAM
-files, contains all the putative variants. sampleNames() can be used to
-see the name of BAM files which variants detected from. Here, We present
-an example on how to annotate variants with predicted consequence using
-<a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>
+<p>A <code>VRanges</code> object will be generated from tallying reads
+from BAM files, contains all the putative variants.
+<code>sampleNames()</code> can be used to see the name of BAM files
+which variants detected from. Here, We present an example on how to
+annotate variants with predicted consequence using <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>
 and Ensembl Variant Effect Predictor (<a href="https://useast.ensembl.org/info/docs/tools/vep/index.html" class="external-link">VEP</a>).</p>
-<p>We started from a VRanges output from tallyReads().</p>
+<p>We started from a <code>VRanges</code> output from
+<code><a href="https://rdrr.io/pkg/bamSliceR/man/tallyReads.html" class="external-link">tallyReads()</a></code>.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">bamSliceR</span><span class="op">)</span></span>
 <span><span class="va">tallied_reads</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tallied_reads_example.rds"</span>, </span>
@@ -410,16 +387,17 @@ and Ensembl Variant Effect Predictor (<a href="https://useast.ensembl.org/info/d
 <span></span>
 <span><span class="co"># Only keep variants with variant allele frequency greater than 5%.</span></span>
 <span><span class="va">tallied_reads_vrinfo_baminfo</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo</span>, <span class="va">VAF</span> <span class="op">&gt;</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
-<div class="section level5">
-<h5 id="variantannotation">VariantAnnotation<a class="anchor" aria-label="anchor" href="#variantannotation"></a>
-</h5>
+</div>
+<div class="section level4">
+<h4 id="variantannotation">VariantAnnotation<a class="anchor" aria-label="anchor" href="#variantannotation"></a>
+</h4>
 <p>Consequence of variants now can be predicted using <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/getVariantAnnotation.html" class="external-link">getVariantAnnotation</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">tallied_reads_vrinfo_baminfo_gr</span></span></code></pre></div>
 </div>
-<div class="section level5">
-<h5 id="ensembl-variant-effect-predictor-vep">Ensembl Variant Effect Predictor (VEP)<a class="anchor" aria-label="anchor" href="#ensembl-variant-effect-predictor-vep"></a>
-</h5>
+<div class="section level4">
+<h4 id="ensembl-variant-effect-predictor-vep">Ensembl Variant Effect Predictor (VEP)<a class="anchor" aria-label="anchor" href="#ensembl-variant-effect-predictor-vep"></a>
+</h4>
 <p>Consequence of variants also can be predicted using Variant Effect
 Predictor (<a href="https://useast.ensembl.org/info/docs/tools/vep/index.html" class="external-link">VEP</a>).
 The code below shows how to generate VCF file as input for VEP:</p>
@@ -464,18 +442,18 @@ patients’ variants.</p>
 <span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/getVEPAnnotation.html" class="external-link">getVEPAnnotation</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_gr</span>, </span>
 <span>                                                             <span class="va">csqFromVEP</span><span class="op">)</span></span></code></pre></div>
 </div>
-</div>
 <div class="section level4">
 <h4 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
 </h4>
 <p>To facilitate downstream analysis of variants from patients,
-bamSliceR provides customized plotVAF() function based on the
-maftools::plotVaF() from <a href="https://www.bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html" class="external-link">maftools</a>
+<code>bamSliceR</code> provides customized plotVAF() function based on
+the <code>maftools::plotVaF()</code> from <a href="https://www.bioconductor.org/packages/release/bioc/vignettes/maftools/inst/doc/maftools.html" class="external-link">maftools</a>
 to help user to investigate the Variant Allele Frequency of the selected
 variants.</p>
-<div class="section level5">
-<h5 id="distribution-of-vaf">Distribution of VAF<a class="anchor" aria-label="anchor" href="#distribution-of-vaf"></a>
-</h5>
+</div>
+<div class="section level4">
+<h4 id="distribution-of-vaf">Distribution of VAF<a class="anchor" aria-label="anchor" href="#distribution-of-vaf"></a>
+</h4>
 <p>By default, the plotVAF would plot the distribution of VAF in top
 genes.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
@@ -488,15 +466,15 @@ genes.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span>, title <span class="op">=</span> <span class="st">"Default: VAF of Top genes"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 <p>By specifying single gene and multiple coordinates against the gene
-products, the plotVAF() would plot distribution of VAF in selected loci
-of the gene.</p>
+products, the <code><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF()</a></code> would plot distribution of VAF in
+selected loci of the gene.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span>, genes <span class="op">=</span> <span class="st">"IDH2"</span>, </span>
 <span>        bySingleLocus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">140</span>, <span class="fl">172</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"VAF of IDH2 at R140 and R172"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <p>By specifying multiple genes and single coordinate against the genes’
-products, the plotVAF() would plot distribution of VAF in selected loci
-of the gene.</p>
+products, the <code><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF()</a></code> would plot distribution of VAF in
+selected loci of the gene.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">histone_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  HIST1H3A <span class="op">=</span> <span class="st">"H3C1"</span>,</span>
@@ -516,14 +494,14 @@ of the gene.</p>
 <span>         bySingleLocus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"VAF of Histone 3 genes at K27"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 </div>
-</div>
 <div class="section level4">
 <h4 id="covert-to-maf-file-format">Covert to MAF file format<a class="anchor" aria-label="anchor" href="#covert-to-maf-file-format"></a>
 </h4>
-<p>Also, bamSliceR provides utility that allow conversion of GRanges to
-MAF format file, which is compatible with maftools. Oncoplots, survival
-analysis, and mutual exclusive test, etc, can then be implemented
-easily.</p>
+<p>Also, <code>bamSliceR</code> provides utility that allow conversion
+of <code>GRanges</code> to <code>MAF</code> format file, which is
+compatible with <code>maftools</code>. Oncoplots, survival analysis, and
+mutual exclusive test, etc, can then be implemented easily.</p>
+<p><img src="maftools.figures.png" width="550"></p>
 </div>
 </div>
 </div>
@@ -1448,6 +1426,9 @@ pediatric acute myeloid leukemia reveals recurrent structural
 alterations and age-specific mutational interactions</a>. <em>Nat.
 Med.</em>, <strong>24</strong>, 103–112.
 </div>
+<div id="ref-noauthor_undated-an" class="csl-entry">
+<a href="https://bioconductor.org/packages/release/bioc/html/gmapR.html" class="external-link">gmapR</a>.
+</div>
 <div id="ref-Lavallee2016-wx" class="csl-entry">
 Lavallée,V.-P. <em>et al.</em> (2016) <a href="https://doi.org/10.1182/blood-2016-03-703868" class="external-link"><span class="nocase">RNA-sequencing</span> analysis of core binding factor
 <span>AML</span> identifies recurrent <span>ZBTB7A</span> mutations and
@@ -1472,29 +1453,22 @@ data commons <span>API</span></a>. <em>Cancer Res.</em>,
 </div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-      </div>
-
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Peter Huang.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Peter Huang.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
-
 
 
 
