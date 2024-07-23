@@ -2,8 +2,8 @@ pandoc: '3.2'
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
-  How_to_generate_txs_coordinates_gencode_gff: How_to_generate_txs_coordinates_gencode_gff.html
-last_built: 2024-07-21T22:00Z
+  BamSliceR.Bioc2024: BamSliceR.Bioc2024.html
+last_built: 2024-07-23T17:25Z
 urls:
   reference: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo/reference
   article: https://huangyizR.github.io/bamSliceR-Bioc2024-Demo/articles
