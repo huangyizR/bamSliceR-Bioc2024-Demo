@@ -21,7 +21,10 @@ Depends:
     VariantAnnotation,
     GenomicRanges,
     plyranges,
-    GenomicDataCommons
+    GenomicDataCommons,
+    bamSliceR
+Remotes:
+    trichelab/bamSliceR
 Suggests: 
     knitr,
     rmarkdown,
