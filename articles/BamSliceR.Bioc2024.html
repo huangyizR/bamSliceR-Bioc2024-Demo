@@ -106,7 +106,12 @@ highly inefficient.</p>
 <h2 id="bamslicer-pipeline">
 <code>bamSliceR</code> pipeline<a class="anchor" aria-label="anchor" href="#bamslicer-pipeline"></a>
 </h2>
-<p><img src="bamSliceR_workflow.png" width="550" height="432"></p>
+<p><img src="bamSliceR_workflow.png" width="550" height="432"> ## If
+you will be analyzing any data that is controlled access, you will need
+to download a GDC token and store it in a file in your home directory.
+For more instructions see <a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/GenomicDataCommons/inst/doc/overview.html#authentication" class="external-link">GenomicDataCommons
+Token</a> and <a href="https://docs.gdc.cancer.gov/Data_Portal/Users_Guide/Cart/#gdc-authentication-tokens" class="external-link">Data
+portal authentication tokens</a></p>
 </div>
 <div class="section level2">
 <h2 id="set-up">Set-up<a class="anchor" aria-label="anchor" href="#set-up"></a>
@@ -230,8 +235,8 @@ function to get the required input format given the gene names.</p>
 <span><span class="co">##   "IDH1"   "IDH2"   "TET1"   "TET2"  "ASXL1"  "ASXL2" "DNMT3A"  "RUNX1"   "H3C1"   "H3C2" </span></span>
 <span><span class="co">## HIST1H3C HIST1H3D HIST1H3E HIST1H3F HIST1H3G HIST1H3H HIST1H3I HIST1H3J    H3F3A </span></span>
 <span><span class="co">##   "H3C3"   "H3C4"   "H3C6"   "H3C7"   "H3C8"  "H3C10"  "H3C11"  "H3C12"  "H3-3A"</span></span></code></pre>
-<p>Get either GRanges or vector of character() for exons of the
-genes.</p>
+<p>Get either <code>GRanges</code> or vector of <code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>
+for exons of the genes.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Get GRanges for exons of all genes above</span></span>
 <span><span class="va">target_ranges_gr</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/getGenesCoordinates.html" class="external-link">getGenesCoordinates</a></span><span class="op">(</span><span class="va">target_genes</span>, ret <span class="op">=</span> <span class="st">"GRanges"</span><span class="op">)</span></span>
@@ -297,8 +302,10 @@ files.</p>
 </h4>
 <p>Then we need make a text file to include all the names of downloaded
 BAM files.</p>
-<p><img src="bamfiles.png" width="400" height="200" alt="bamfiles">
-terminal <code>command</code></p>
+<div class="float">
+<img src="bamfiles.png" width="400" height="200" alt="bamfiles"><div class="figcaption">bamfiles</div>
+</div>
+<p>terminal <code>command</code></p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="bu">cd</span> DIR_BAM_FILES</span>
 <span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="fu">ls</span> <span class="kw">|</span> <span class="fu">grep</span> bam$ <span class="op">&gt;</span> bamfiles</span></code></pre></div>
 <p>In the directory of the downloaded BAM files, we then
@@ -353,8 +360,8 @@ but less workers on granges regions.</p>
 <span>                           BPPARAM <span class="op">=</span> <span class="fu">MulticoreParam</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">4</span> , stop.on.error <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>                           parallelOnRanges <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                           parallelOnRangesBPPARAM <span class="op">=</span> <span class="fu">MulticoreParam</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
-<p>We also provide a bash template to run <code><a href="https://rdrr.io/pkg/bamSliceR/man/tallyReads.html" class="external-link">tallyReads()</a></code> on
-HPC on large cohorts.</p>
+<p>We also provide a bash <a href="https://github.com/trichelab/bamSliceR/blob/main/vignettes/How_to_generate_txs_coordinates_gencode_gff.md" class="external-link">template</a>
+to run <code><a href="https://rdrr.io/pkg/bamSliceR/man/tallyReads.html" class="external-link">tallyReads()</a></code> on HPC on large cohorts.</p>
 </div>
 </div>
 <div class="section level3">
@@ -376,24 +383,162 @@ and Ensembl Variant Effect Predictor (<a href="https://useast.ensembl.org/info/d
 <span><span class="va">tallied_reads</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"tallied_reads_example.rds"</span>, </span>
 <span>                            package <span class="op">=</span> <span class="st">"bamSliceR"</span><span class="op">)</span></span>
 <span><span class="va">tallied_reads_vr</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">tallied_reads</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># VRanges-specific methods such as altDepth(), refDepth(), totalDepth() would not</span></span>
+<span><span class="va">tallied_reads_vr</span><span class="op">[</span><span class="fl">4565</span><span class="op">:</span><span class="fl">4566</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## VRanges object with 2 ranges and 17 metadata columns:</span></span>
+<span><span class="co">##       seqnames    ranges strand         ref              alt     totalDepth</span></span>
+<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; &lt;character&gt; &lt;characterOrRle&gt; &lt;integerOrRle&gt;</span></span>
+<span><span class="co">##   [1]     chr1 226066383      *           A                G            139</span></span>
+<span><span class="co">##   [2]     chr1 226066384      *           T                C             96</span></span>
+<span><span class="co">##             refDepth       altDepth            sampleNames softFilterMatrix | n.read.pos</span></span>
+<span><span class="co">##       &lt;integerOrRle&gt; &lt;integerOrRle&gt;          &lt;factorOrRle&gt;         &lt;matrix&gt; |  &lt;integer&gt;</span></span>
+<span><span class="co">##   [1]            138              1 TARGET-20-PAVLZE-09A..                  |          1</span></span>
+<span><span class="co">##   [2]             95              1 TARGET-20-PAVHCV-09A..                  |          1</span></span>
+<span><span class="co">##       n.read.pos.ref raw.count.total count.plus count.plus.ref count.minus</span></span>
+<span><span class="co">##            &lt;integer&gt;       &lt;integer&gt;  &lt;integer&gt;      &lt;integer&gt;   &lt;integer&gt;</span></span>
+<span><span class="co">##   [1]             60             139          1             90           0</span></span>
+<span><span class="co">##   [2]             49              96          1             65           0</span></span>
+<span><span class="co">##       count.minus.ref count.del.plus count.del.minus read.pos.mean read.pos.mean.ref</span></span>
+<span><span class="co">##             &lt;integer&gt;      &lt;integer&gt;       &lt;integer&gt;     &lt;numeric&gt;         &lt;numeric&gt;</span></span>
+<span><span class="co">##   [1]              48              0               0            67           33.0652</span></span>
+<span><span class="co">##   [2]              30              0               0            35           31.8316</span></span>
+<span><span class="co">##       read.pos.var read.pos.var.ref     mdfne mdfne.ref count.high.nm count.high.nm.ref</span></span>
+<span><span class="co">##          &lt;numeric&gt;        &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;     &lt;integer&gt;         &lt;integer&gt;</span></span>
+<span><span class="co">##   [1]           NA          420.538        NA        NA             1               138</span></span>
+<span><span class="co">##   [2]           NA          479.346        NA        NA             1                95</span></span>
+<span><span class="co">##   -------</span></span>
+<span><span class="co">##   seqinfo: 2779 sequences (1 circular) from 2 genomes (hg38, NA)</span></span>
+<span><span class="co">##   hardFilters: NULL</span></span></code></pre>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># VRanges-specific methods such as altDepth(), refDepth(), totalDepth() would not</span></span>
 <span><span class="co"># availiable after conversion to GRanges. So save those info now.</span></span>
 <span><span class="va">tallied_reads_vr</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/saveVRinfo.html" class="external-link">saveVRinfo</a></span><span class="op">(</span><span class="va">tallied_reads_vr</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Match back the metadata of BAM files to the VRanges</span></span>
+<span><span class="va">tallied_reads_vr</span><span class="op">[</span><span class="fl">4565</span><span class="op">:</span><span class="fl">4566</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## VRanges object with 2 ranges and 23 metadata columns:</span></span>
+<span><span class="co">##       seqnames    ranges strand         ref              alt     totalDepth</span></span>
+<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; &lt;character&gt; &lt;characterOrRle&gt; &lt;integerOrRle&gt;</span></span>
+<span><span class="co">##   [1]     chr1 226066383      *           A                G            139</span></span>
+<span><span class="co">##   [2]     chr1 226066384      *           T                C             96</span></span>
+<span><span class="co">##             refDepth       altDepth            sampleNames softFilterMatrix | n.read.pos</span></span>
+<span><span class="co">##       &lt;integerOrRle&gt; &lt;integerOrRle&gt;          &lt;factorOrRle&gt;         &lt;matrix&gt; |  &lt;integer&gt;</span></span>
+<span><span class="co">##   [1]            138              1 TARGET-20-PAVLZE-09A..                  |          1</span></span>
+<span><span class="co">##   [2]             95              1 TARGET-20-PAVHCV-09A..                  |          1</span></span>
+<span><span class="co">##       n.read.pos.ref raw.count.total count.plus count.plus.ref count.minus</span></span>
+<span><span class="co">##            &lt;integer&gt;       &lt;integer&gt;  &lt;integer&gt;      &lt;integer&gt;   &lt;integer&gt;</span></span>
+<span><span class="co">##   [1]             60             139          1             90           0</span></span>
+<span><span class="co">##   [2]             49              96          1             65           0</span></span>
+<span><span class="co">##       count.minus.ref count.del.plus count.del.minus read.pos.mean read.pos.mean.ref</span></span>
+<span><span class="co">##             &lt;integer&gt;      &lt;integer&gt;       &lt;integer&gt;     &lt;numeric&gt;         &lt;numeric&gt;</span></span>
+<span><span class="co">##   [1]              48              0               0            67           33.0652</span></span>
+<span><span class="co">##   [2]              30              0               0            35           31.8316</span></span>
+<span><span class="co">##       read.pos.var read.pos.var.ref     mdfne mdfne.ref count.high.nm count.high.nm.ref</span></span>
+<span><span class="co">##          &lt;numeric&gt;        &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;     &lt;integer&gt;         &lt;integer&gt;</span></span>
+<span><span class="co">##   [1]           NA          420.538        NA        NA             1               138</span></span>
+<span><span class="co">##   [2]           NA          479.346        NA        NA             1                95</span></span>
+<span><span class="co">##               ref         alt totalDepth  refDepth  altDepth        VAF</span></span>
+<span><span class="co">##       &lt;character&gt; &lt;character&gt;  &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;  &lt;numeric&gt;</span></span>
+<span><span class="co">##   [1]           A           G        139       138         1 0.00719424</span></span>
+<span><span class="co">##   [2]           T           C         96        95         1 0.01041667</span></span>
+<span><span class="co">##   -------</span></span>
+<span><span class="co">##   seqinfo: 2779 sequences (1 circular) from 2 genomes (hg38, NA)</span></span>
+<span><span class="co">##   hardFilters: NULL</span></span></code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Match back the metadata of BAM files to the VRanges</span></span>
 <span><span class="co">#file_meta = getGDCBAMs("TARGET-AML", "RNA-Seq", "STAR 2-Pass Genome")</span></span>
 <span><span class="va">tallied_reads_vrinfo_baminfo</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/annotateWithBAMinfo.html" class="external-link">annotateWithBAMinfo</a></span><span class="op">(</span><span class="va">tallied_reads_vr</span>, <span class="va">file_meta</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Only keep variants with variant allele frequency greater than 5%.</span></span>
+<span><span class="va">tallied_reads_vrinfo_baminfo</span><span class="op">[</span><span class="fl">4565</span><span class="op">:</span><span class="fl">4566</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## VRanges object with 2 ranges and 32 metadata columns:</span></span>
+<span><span class="co">##       seqnames    ranges strand         ref              alt     totalDepth</span></span>
+<span><span class="co">##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; &lt;character&gt; &lt;characterOrRle&gt; &lt;integerOrRle&gt;</span></span>
+<span><span class="co">##   [1]     chr1 226066383      *           A                G            139</span></span>
+<span><span class="co">##   [2]     chr1 226066384      *           T                C             96</span></span>
+<span><span class="co">##             refDepth       altDepth            sampleNames softFilterMatrix | n.read.pos</span></span>
+<span><span class="co">##       &lt;integerOrRle&gt; &lt;integerOrRle&gt;          &lt;factorOrRle&gt;         &lt;matrix&gt; |  &lt;integer&gt;</span></span>
+<span><span class="co">##   [1]            138              1 TARGET-20-PAVLZE-09A..                  |          1</span></span>
+<span><span class="co">##   [2]             95              1 TARGET-20-PAVHCV-09A..                  |          1</span></span>
+<span><span class="co">##       n.read.pos.ref raw.count.total count.plus count.plus.ref count.minus</span></span>
+<span><span class="co">##            &lt;integer&gt;       &lt;integer&gt;  &lt;integer&gt;      &lt;integer&gt;   &lt;integer&gt;</span></span>
+<span><span class="co">##   [1]             60             139          1             90           0</span></span>
+<span><span class="co">##   [2]             49              96          1             65           0</span></span>
+<span><span class="co">##       count.minus.ref count.del.plus count.del.minus read.pos.mean read.pos.mean.ref</span></span>
+<span><span class="co">##             &lt;integer&gt;      &lt;integer&gt;       &lt;integer&gt;     &lt;numeric&gt;         &lt;numeric&gt;</span></span>
+<span><span class="co">##   [1]              48              0               0            67           33.0652</span></span>
+<span><span class="co">##   [2]              30              0               0            35           31.8316</span></span>
+<span><span class="co">##       read.pos.var read.pos.var.ref     mdfne mdfne.ref count.high.nm count.high.nm.ref</span></span>
+<span><span class="co">##          &lt;numeric&gt;        &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;     &lt;integer&gt;         &lt;integer&gt;</span></span>
+<span><span class="co">##   [1]           NA          420.538        NA        NA             1               138</span></span>
+<span><span class="co">##   [2]           NA          479.346        NA        NA             1                95</span></span>
+<span><span class="co">##               ref         alt totalDepth  refDepth  altDepth        VAF</span></span>
+<span><span class="co">##       &lt;character&gt; &lt;character&gt;  &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;  &lt;numeric&gt;</span></span>
+<span><span class="co">##   [1]           A           G        139       138         1 0.00719424</span></span>
+<span><span class="co">##   [2]           T           C         96        95         1 0.01041667</span></span>
+<span><span class="co">##                           id                 sample              file_name</span></span>
+<span><span class="co">##                  &lt;character&gt;            &lt;character&gt;            &lt;character&gt;</span></span>
+<span><span class="co">##   [1] 6cb02b4d-ca87-4d9d-a.. TARGET-20-PAVLZE-09A.. 09b91534-5759-4000-9..</span></span>
+<span><span class="co">##   [2] f74f1d3f-8774-4bd2-b.. TARGET-20-PAVHCV-09A.. 6b5b7906-4220-4f7d-b..</span></span>
+<span><span class="co">##                case_id            sample_type experimental_strategy           workflow</span></span>
+<span><span class="co">##            &lt;character&gt;            &lt;character&gt;           &lt;character&gt;        &lt;character&gt;</span></span>
+<span><span class="co">##   [1] TARGET-20-PAVLZE Primary Blood Derive..               RNA-Seq STAR 2-Pass Genome</span></span>
+<span><span class="co">##   [2] TARGET-20-PAVHCV Primary Blood Derive..               RNA-Seq STAR 2-Pass Genome</span></span>
+<span><span class="co">##         downloaded_file_name      UPC_ID</span></span>
+<span><span class="co">##                  &lt;character&gt; &lt;character&gt;</span></span>
+<span><span class="co">##   [1] TARGET-20-PAVLZE-09A..      PAVLZE</span></span>
+<span><span class="co">##   [2] TARGET-20-PAVHCV-09A..      PAVHCV</span></span>
+<span><span class="co">##   -------</span></span>
+<span><span class="co">##   seqinfo: 2779 sequences (1 circular) from 2 genomes (hg38, NA)</span></span>
+<span><span class="co">##   hardFilters: NULL</span></span></code></pre>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Only keep variants with variant allele frequency greater than 5%.</span></span>
 <span><span class="va">tallied_reads_vrinfo_baminfo</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo</span>, <span class="va">VAF</span> <span class="op">&gt;</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="variantannotation">VariantAnnotation<a class="anchor" aria-label="anchor" href="#variantannotation"></a>
 </h4>
 <p>Consequence of variants now can be predicted using <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/getVariantAnnotation.html" class="external-link">getVariantAnnotation</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">tallied_reads_vrinfo_baminfo_gr</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/getVariantAnnotation.html" class="external-link">getVariantAnnotation</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">tallied_reads_vrinfo_baminfo_gr</span></span>
+<span><span class="va">tallied_reads_vrinfo_baminfo_gr</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UPC_ID"</span>, <span class="fu">bamSliceR</span><span class="fu">:::</span><span class="va">.VARIANT_ANNOTATE_INFO</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## GRanges object with 55017 ranges and 15 metadata columns:</span></span>
+<span><span class="co">##           seqnames            ranges strand |      UPC_ID      varAllele    CDSLOC</span></span>
+<span><span class="co">##              &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt; &lt;DNAStringSet&gt; &lt;IRanges&gt;</span></span>
+<span><span class="co">##       [1]     chr1         143905605      - |      PAVCJW              G       189</span></span>
+<span><span class="co">##       [2]     chr1         143905605      - |      PAVCJW              G       362</span></span>
+<span><span class="co">##       [3]     chr1         143905634      - |      PAVHLI              A       160</span></span>
+<span><span class="co">##       [4]     chr1         143905634      - |      PAVHLI              A       333</span></span>
+<span><span class="co">##       [5]     chr1         143905660      - |      PAVDAB              A       134</span></span>
+<span><span class="co">##       ...      ...               ...    ... .         ...            ...       ...</span></span>
+<span><span class="co">##   [55013]    chr21          34892962      - |      PATLFJ             AA        60</span></span>
+<span><span class="co">##   [55014]    chr21          35048867      - |      PASHWN             TT        33</span></span>
+<span><span class="co">##   [55015]    chr21          35048867      - |      PASHWN             TT        33</span></span>
+<span><span class="co">##   [55016]    chr21 35048881-35048882      - |      PAURVI              T     18-19</span></span>
+<span><span class="co">##   [55017]    chr21 35048881-35048882      - |      PAURVI              T     18-19</span></span>
+<span><span class="co">##              PROTEINLOC   QUERYID        TXID         CDSID      GENEID   CONSEQUENCE</span></span>
+<span><span class="co">##           &lt;IntegerList&gt; &lt;integer&gt; &lt;character&gt; &lt;IntegerList&gt; &lt;character&gt;      &lt;factor&gt;</span></span>
+<span><span class="co">##       [1]            63        71       17544   21002,21003      440686 nonsynonymous</span></span>
+<span><span class="co">##       [2]           121        71       17545   21002,21003      440686 nonsynonymous</span></span>
+<span><span class="co">##       [3]            54        72       17544   21002,21003      440686 nonsynonymous</span></span>
+<span><span class="co">##       [4]           111        72       17545   21002,21003      440686 nonsense     </span></span>
+<span><span class="co">##       [5]            45        73       17544   21002,21003      440686 nonsynonymous</span></span>
+<span><span class="co">##       ...           ...       ...         ...           ...         ...           ...</span></span>
+<span><span class="co">##   [55013]            20     43534      237682        261221   101928269    frameshift</span></span>
+<span><span class="co">##   [55014]            11     43535      237671        261222         861    frameshift</span></span>
+<span><span class="co">##   [55015]            11     43535      237682        261222   101928269    frameshift</span></span>
+<span><span class="co">##   [55016]           6,7     43536      237671        261222         861    frameshift</span></span>
+<span><span class="co">##   [55017]           6,7     43536      237682        261222   101928269    frameshift</span></span>
+<span><span class="co">##                 REFCODON       VARCODON         REFAA         VARAA       POS      CHANGE</span></span>
+<span><span class="co">##           &lt;DNAStringSet&gt; &lt;DNAStringSet&gt; &lt;AAStringSet&gt; &lt;AAStringSet&gt; &lt;integer&gt; &lt;character&gt;</span></span>
+<span><span class="co">##       [1]            CAT            CAG             H             Q        63        H63Q</span></span>
+<span><span class="co">##       [2]            ATG            AGG             M             R       121       M121R</span></span>
+<span><span class="co">##       [3]            CGC            AGC             R             S        54        R54S</span></span>
+<span><span class="co">##       [4]            TGC            TGA             C             *       111       C111*</span></span>
+<span><span class="co">##       [5]            GGG            GAG             G             E        45        G45E</span></span>
+<span><span class="co">##       ...            ...            ...           ...           ...       ...         ...</span></span>
+<span><span class="co">##   [55013]            GAA           GAAA                                    20          20</span></span>
+<span><span class="co">##   [55014]            CCT           CCTT                                    11          11</span></span>
+<span><span class="co">##   [55015]            CCT           CCTT                                    11          11</span></span>
+<span><span class="co">##   [55016]         ATATTT          ATTTT                                     6           6</span></span>
+<span><span class="co">##   [55017]         ATATTT          ATTTT                                     6           6</span></span>
+<span><span class="co">##   -------</span></span>
+<span><span class="co">##   seqinfo: 24 sequences from hg38 genome</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="ensembl-variant-effect-predictor-vep">Ensembl Variant Effect Predictor (VEP)<a class="anchor" aria-label="anchor" href="#ensembl-variant-effect-predictor-vep"></a>
@@ -401,7 +546,7 @@ and Ensembl Variant Effect Predictor (<a href="https://useast.ensembl.org/info/d
 <p>Consequence of variants also can be predicted using Variant Effect
 Predictor (<a href="https://useast.ensembl.org/info/docs/tools/vep/index.html" class="external-link">VEP</a>).
 The code below shows how to generate VCF file as input for VEP:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/gr2vrforVEP.html" class="external-link">gr2vrforVEP</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo</span>, file <span class="op">=</span> <span class="st">"~/INPUT_VCF_FILE.vcf"</span>, </span>
 <span>            writeToVcf <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">vr</span></span>
 <span></span>
@@ -430,17 +575,32 @@ The code below shows how to generate VCF file as input for VEP:</p>
 or (<a href="https://useast.ensembl.org/info/docs/tools/vep/index.html" class="external-link">VEP</a>).</p>
 <p>The VCF file with variant effect predicted can be annotated back to
 patients’ variants.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Example vcf file with variant effect predicted.</span></span>
 <span><span class="co"># Output VCF file from VEP</span></span>
 <span><span class="va">vep_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"TARGET_AML_VRforVEP_vep.vcf"</span>, package <span class="op">=</span> <span class="st">"bamSliceR"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#Extract the predicted consequences of variants from VEP</span></span>
 <span><span class="va">csqFromVEP</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/getCSQfromVEP.html" class="external-link">getCSQfromVEP</a></span><span class="op">(</span><span class="va">vep_file</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">csqFromVEP</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#Annotated the variants with VEP predicted consequences</span></span>
 <span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/getVEPAnnotation.html" class="external-link">getVEPAnnotation</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_gr</span>, </span>
-<span>                                                             <span class="va">csqFromVEP</span><span class="op">)</span></span></code></pre></div>
+<span>                                                             <span class="va">csqFromVEP</span><span class="op">)</span></span>
+<span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span><span class="op">[</span><span class="fl">1523</span><span class="op">:</span><span class="fl">1525</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">17</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="missing-reference-read-counts-for-indels-in-tallyreads">Missing Reference Read Counts for INDELs in
+<code>tallyreads()</code><a class="anchor" aria-label="anchor" href="#missing-reference-read-counts-for-indels-in-tallyreads"></a>
+</h4>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">indels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span>, </span>
+<span>                <span class="fu">bamSliceR</span><span class="fu">:::</span><span class="fu">getVarType</span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"SNP"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">indels</span><span class="op">$</span><span class="va">VAF</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">indels</span><span class="op">$</span><span class="va">refDepth</span><span class="op">)</span></span></code></pre></div>
+<p><code>bamSliceR</code> has a function
+<code><a href="https://rdrr.io/pkg/bamSliceR/man/fixIndelRefCounts.html" class="external-link">fixIndelRefCounts()</a></code> pileup the total read depth for these
+<a href="https://github.com/trichelab/bamSliceR/blob/main/vignettes/test_on_fixIndelRefCounts_pileupVSTallyReads.md" class="external-link">INDELs</a>.</p>
 </div>
 <div class="section level4">
 <h4 id="visualization">Visualization<a class="anchor" aria-label="anchor" href="#visualization"></a>
@@ -454,9 +614,9 @@ variants.</p>
 <div class="section level4">
 <h4 id="distribution-of-vaf">Distribution of VAF<a class="anchor" aria-label="anchor" href="#distribution-of-vaf"></a>
 </h4>
-<p>By default, the plotVAF would plot the distribution of VAF in top
-genes.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<p>By default, the <code>plotVAF</code> would plot the distribution of
+VAF in top genes.</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">bamSliceR</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">TARGET_AML_RNA_annotated_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"TARGET_AML_RNA_annotated.gr.rds"</span>, </span>
@@ -464,18 +624,18 @@ genes.</p>
 <span></span>
 <span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">TARGET_AML_RNA_annotated_file</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span>, title <span class="op">=</span> <span class="st">"Default: VAF of Top genes"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <p>By specifying single gene and multiple coordinates against the gene
 products, the <code><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF()</a></code> would plot distribution of VAF in
 selected loci of the gene.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span>, genes <span class="op">=</span> <span class="st">"IDH2"</span>, </span>
 <span>        bySingleLocus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">140</span>, <span class="fl">172</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"VAF of IDH2 at R140 and R172"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 <p>By specifying multiple genes and single coordinate against the genes’
 products, the <code><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF()</a></code> would plot distribution of VAF in
 selected loci of the gene.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">histone_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  HIST1H3A <span class="op">=</span> <span class="st">"H3C1"</span>,</span>
 <span>  HIST1H3B <span class="op">=</span> <span class="st">"H3C2"</span>,</span>
@@ -492,7 +652,7 @@ selected loci of the gene.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF</a></span> <span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span>, </span>
 <span>         genes <span class="op">=</span> <span class="va">histone_genes</span>, </span>
 <span>         bySingleLocus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"VAF of Histone 3 genes at K27"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="covert-to-maf-file-format">Covert to MAF file format<a class="anchor" aria-label="anchor" href="#covert-to-maf-file-format"></a>
@@ -500,7 +660,8 @@ selected loci of the gene.</p>
 <p>Also, <code>bamSliceR</code> provides utility that allow conversion
 of <code>GRanges</code> to <code>MAF</code> format file, which is
 compatible with <code>maftools</code>. Oncoplots, survival analysis, and
-mutual exclusive test, etc, can then be implemented easily.</p>
+mutual exclusive test, etc, can then be implemented easily. More details
+in <a href="https://github.com/trichelab/bamSliceR/blob/main/vignettes/Annotation_and_Visualization.md" class="external-link">here</a>.</p>
 <p><img src="maftools.figures.png" width="550"></p>
 </div>
 </div>
@@ -508,6 +669,7 @@ mutual exclusive test, etc, can then be implemented easily.</p>
 <div class="section level2">
 <h2 id="working-with-transcriptome-bam-files">Working with Transcriptome BAM files<a class="anchor" aria-label="anchor" href="#working-with-transcriptome-bam-files"></a>
 </h2>
+<p><img src="BamSlicer_transcripts.png" width="900"></p>
 <div class="section level3">
 <h3 id="why-transcriptome-bam">Why Transcriptome BAM ?<a class="anchor" aria-label="anchor" href="#why-transcriptome-bam"></a>
 </h3>
@@ -520,7 +682,7 @@ variants.</p>
 transcript-aware variants annotation using transcriptome BAM that
 generated by aligning reads from RNA-seq to reference transcripts
 sequences (GENCODE v36)[<a href="https://www.gencodegenes.org/human/release_36.html" class="external-link uri">https://www.gencodegenes.org/human/release_36.html</a>].</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">rtracklayer</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">bamSliceR</span><span class="op">)</span></span>
 <span></span>
@@ -559,7 +721,7 @@ when mapping reads to reference transcripts sequences. Convention GFF3
 files, from GENCODE for example, contains the gene annotation on the
 reference chromosomes, which are not compatible with Transcriptome
 BAM.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">rtracklayer</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">bamSliceR</span><span class="op">)</span></span>
 <span><span class="va">coords.column.names</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"seqid"</span>, <span class="st">"type"</span>, <span class="st">"start"</span>, <span class="st">"end"</span>, <span class="st">"gene_name"</span><span class="op">)</span></span>
@@ -588,14 +750,14 @@ coordinates of transcripts for each features entity (except “gene”
 feature), based on the given genomic coordinates. The function would
 maintain the internal structure of the GFF3 file (for example, the
 hierarchy of the features for each genes.)</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">genomic.column.names</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"g_seqid"</span>, <span class="st">"g_start"</span>, <span class="st">"g_end"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/get_txs_coords_of_gff.html" class="external-link">get_txs_coords_of_gff</a></span><span class="op">(</span> gencode.file <span class="op">=</span> <span class="va">gencode.v36.file</span>, isSaveGenomicCoords <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">gencode.v36.transcripts.df</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "Get index of all feature types in GFF file..."</span></span>
 <span><span class="co">## [1] "Get the info of each features..."</span></span>
 <span><span class="co">## [1] "Get the coordinates aginst transcripts..."</span></span>
 <span><span class="co">## [1] "Swap genomic coordinates with transcripts coordiantes..."</span></span></code></pre>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gencode.v36.transcripts.df</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">coords.column.names</span>, <span class="va">genomic.column.names</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 2403 rows and 8 columns</span></span>
 <span><span class="co">##                  seqid       type     start       end   gene_name  g_seqid   g_start</span></span>
@@ -638,8 +800,8 @@ transcripts that compatible with the variant.</p>
 <p>For each genes, <code>bamSliceR</code> has function
 <code>getDisjoinOverlapBins</code> to create disjoint bins that each bin
 contains the information of both transcriptome and genomic coordinates
-of overlapped transcripts. <img src="Disjoint_BIN_Fig2.png" width="600"></p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+of overlapped transcripts. <img src="Disjoint_BIN_Fig2.png" width="900"></p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gencode.v36.txs.file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"gencode.v36.txs.annotation.subset.gff3"</span>, </span>
 <span>                             package <span class="op">=</span> <span class="st">"bamSliceR"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/getDisjoinOverlapBins.html" class="external-link">getDisjoinOverlapBins</a></span><span class="op">(</span>gencode.file.txs <span class="op">=</span> <span class="va">gencode.v36.txs.file</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">gencode.v36.txs.bins</span></span>
@@ -680,7 +842,7 @@ of overlapped transcripts. <img src="Disjoint_BIN_Fig2.png" width="600"></p>
 <p><code><a href="https://rdrr.io/pkg/bamSliceR/man/fixMissingTxs.html" class="external-link">fixMissingTxs()</a></code> would call
 <code><a href="https://rdrr.io/pkg/bamSliceR/man/getDisjoinOverlapBins.html" class="external-link">getDisjoinOverlapBins()</a></code> to find all transcripts compatible
 with a variant.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">oneTxsVariant_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"oneTxsVariant.rds"</span>, </span>
 <span>                             package <span class="op">=</span> <span class="st">"bamSliceR"</span><span class="op">)</span></span>
 <span><span class="va">bam.file.dir</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"bamSliceR"</span><span class="op">)</span></span>
@@ -699,7 +861,7 @@ with a variant.</p>
 <span><span class="co">##   -------</span></span>
 <span><span class="co">##   seqinfo: 232117 sequences from gencode.v36.txs genome</span></span>
 <span><span class="co">##   hardFilters: NULL</span></span></code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">all_compatible_txs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/fixMissingTxs.html" class="external-link">fixMissingTxs</a></span><span class="op">(</span><span class="va">oneTxsVariant</span>, </span>
 <span>                                   gencode.file.txs <span class="op">=</span> <span class="va">gencode.v36.txs.file</span>, </span>
 <span>                                   bam.file.dir <span class="op">=</span> <span class="va">bam.file.dir</span><span class="op">)</span></span>
@@ -757,7 +919,7 @@ object from GENCODE annotation file in GFF3 format that contains
 information of both genomic and transcriptome coordinates. 2)
 <code>Fasta</code> file contains nucleotide sequences of
 transcripts.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create txdb object</span></span>
 <span><span class="va">gencode.v36.txs.file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"gencode.v36.txs.annotation.subset.gff3"</span>, </span>
 <span>                             package <span class="op">=</span> <span class="st">"bamSliceR"</span><span class="op">)</span></span>
@@ -772,73 +934,40 @@ transcripts.</p>
 <span><span class="va">leu.tallied.reads.annotated</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/getVariantAnnotation.Txs.html" class="external-link">getVariantAnnotation.Txs</a></span><span class="op">(</span><span class="va">leu.tallied.reads</span>, </span>
 <span>                                                       txdb <span class="op">=</span> <span class="va">txdb</span>, </span>
 <span>                                                       seqSource <span class="op">=</span> <span class="va">seqSource</span><span class="op">)</span></span>
-<span><span class="va">leu.tallied.reads.annotated</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UPC_ID"</span>,<span class="fu">bamSliceR</span><span class="fu">:::</span><span class="va">.VARIANT_ANNOTATE_INFO</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">14</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">## GRanges object with 12463 ranges and 15 metadata columns:</span></span>
-<span><span class="co">##                     seqnames    ranges strand |      UPC_ID      varAllele    CDSLOC</span></span>
-<span><span class="co">##                        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt; &lt;DNAStringSet&gt; &lt;IRanges&gt;</span></span>
-<span><span class="co">##       [1]  ENST00000366816.5   536-537      + |      02H053              C   192-193</span></span>
-<span><span class="co">##       [2]  ENST00000366816.5       578      + |      02H053             CT       234</span></span>
-<span><span class="co">##       [3]  ENST00000366816.5       654      + |      02H053             CT       310</span></span>
-<span><span class="co">##       [4] ENST00000366815.10       353      + |      02H053             CT       234</span></span>
-<span><span class="co">##       [5] ENST00000366815.10       429      + |      02H053             CT       310</span></span>
-<span><span class="co">##       ...                ...       ...    ... .         ...            ...       ...</span></span>
-<span><span class="co">##   [12459]  ENST00000613218.4      4191      + |      14H071              C      3759</span></span>
-<span><span class="co">##   [12460]  ENST00000620121.4      1362      + |      14H071              T      1167</span></span>
-<span><span class="co">##   [12461]  ENST00000620121.4      3954      + |      14H071              C      3759</span></span>
-<span><span class="co">##   [12462]  ENST00000646985.1      3819      + |      14H071              C      3576</span></span>
-<span><span class="co">##   [12463]  ENST00000306058.9      3744      + |      14H071              C      3744</span></span>
-<span><span class="co">##              PROTEINLOC   QUERYID        TXID         CDSID             GENEID</span></span>
-<span><span class="co">##           &lt;IntegerList&gt; &lt;integer&gt; &lt;character&gt; &lt;IntegerList&gt;        &lt;character&gt;</span></span>
-<span><span class="co">##       [1]         64,65         1          22           212 ENSG00000163041.13</span></span>
-<span><span class="co">##       [2]            78         2          22           212 ENSG00000163041.13</span></span>
-<span><span class="co">##       [3]           104         3          22           213 ENSG00000163041.13</span></span>
-<span><span class="co">##       [4]            78        10          21           209 ENSG00000163041.13</span></span>
-<span><span class="co">##       [5]           104        11          21           210 ENSG00000163041.13</span></span>
-<span><span class="co">##       ...           ...       ...         ...           ...                ...</span></span>
-<span><span class="co">##   [12459]          1253     53935          99           597 ENSG00000171456.20</span></span>
-<span><span class="co">##   [12460]           389     53938         106           613 ENSG00000171456.20</span></span>
-<span><span class="co">##   [12461]          1253     53939         106           614 ENSG00000171456.20</span></span>
-<span><span class="co">##   [12462]          1192     53943         124           713 ENSG00000171456.20</span></span>
-<span><span class="co">##   [12463]          1248     53945           9           118 ENSG00000171456.20</span></span>
-<span><span class="co">##           CONSEQUENCE       REFCODON       VARCODON         REFAA         VARAA       POS</span></span>
-<span><span class="co">##              &lt;factor&gt; &lt;DNAStringSet&gt; &lt;DNAStringSet&gt; &lt;AAStringSet&gt; &lt;AAStringSet&gt; &lt;integer&gt;</span></span>
-<span><span class="co">##       [1]  frameshift         CGCAAA          CGCAA                                    64</span></span>
-<span><span class="co">##       [2]  frameshift            GAC           GACT                                    78</span></span>
-<span><span class="co">##       [3]  frameshift            CTT           CTTT                                   104</span></span>
-<span><span class="co">##       [4]  frameshift            GAC           GACT                                    78</span></span>
-<span><span class="co">##       [5]  frameshift            CTT           CTTT                                   104</span></span>
-<span><span class="co">##       ...         ...            ...            ...           ...           ...       ...</span></span>
-<span><span class="co">##   [12459]  synonymous            AGT            AGC             S             S      1253</span></span>
-<span><span class="co">##   [12460]  synonymous            CCA            CCT             P             P       389</span></span>
-<span><span class="co">##   [12461]  synonymous            AGT            AGC             S             S      1253</span></span>
-<span><span class="co">##   [12462]  synonymous            AGT            AGC             S             S      1192</span></span>
-<span><span class="co">##   [12463]  synonymous            AGT            AGC             S             S      1248</span></span>
-<span><span class="co">##                CHANGE</span></span>
-<span><span class="co">##           &lt;character&gt;</span></span>
-<span><span class="co">##       [1]          64</span></span>
-<span><span class="co">##       [2]          78</span></span>
-<span><span class="co">##       [3]         104</span></span>
-<span><span class="co">##       [4]          78</span></span>
-<span><span class="co">##       [5]         104</span></span>
-<span><span class="co">##       ...         ...</span></span>
-<span><span class="co">##   [12459]      S1253S</span></span>
-<span><span class="co">##   [12460]       P389P</span></span>
-<span><span class="co">##   [12461]      S1253S</span></span>
-<span><span class="co">##   [12462]      S1192S</span></span>
-<span><span class="co">##   [12463]      S1248S</span></span>
+<span><span class="va">leu.tallied.reads.annotated</span><span class="op">[</span><span class="fl">3435</span><span class="op">:</span><span class="fl">3438</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UPC_ID"</span>,<span class="fu">bamSliceR</span><span class="fu">:::</span><span class="va">.VARIANT_ANNOTATE_INFO</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">14</span><span class="op">]</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<pre><code><span><span class="co">## GRanges object with 4 ranges and 15 metadata columns:</span></span>
+<span><span class="co">##                seqnames    ranges strand |      UPC_ID      varAllele    CDSLOC</span></span>
+<span><span class="co">##                   &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt; &lt;DNAStringSet&gt; &lt;IRanges&gt;</span></span>
+<span><span class="co">##   [1] ENST00000527034.5      1217      - |      05H195              T      1204</span></span>
+<span><span class="co">##   [2] ENST00000527034.5      1233      - |      05H195              G      1188</span></span>
+<span><span class="co">##   [3] ENST00000527034.5      1335      - |      05H195              T      1086</span></span>
+<span><span class="co">##   [4] ENST00000533177.5       486      - |      05H195             TG      1879</span></span>
+<span><span class="co">##          PROTEINLOC   QUERYID        TXID         CDSID             GENEID   CONSEQUENCE</span></span>
+<span><span class="co">##       &lt;IntegerList&gt; &lt;integer&gt; &lt;character&gt; &lt;IntegerList&gt;        &lt;character&gt;      &lt;factor&gt;</span></span>
+<span><span class="co">##   [1]           402     15300          79           488 ENSG00000108312.15 nonsynonymous</span></span>
+<span><span class="co">##   [2]           396     15301          79           488 ENSG00000108312.15 synonymous   </span></span>
+<span><span class="co">##   [3]           362     15302          79           489 ENSG00000108312.15 synonymous   </span></span>
+<span><span class="co">##   [4]           627     15312          86           531 ENSG00000108312.15 frameshift   </span></span>
+<span><span class="co">##             REFCODON       VARCODON         REFAA         VARAA       POS      CHANGE</span></span>
+<span><span class="co">##       &lt;DNAStringSet&gt; &lt;DNAStringSet&gt; &lt;AAStringSet&gt; &lt;AAStringSet&gt; &lt;integer&gt; &lt;character&gt;</span></span>
+<span><span class="co">##   [1]            GAT            TAT             D             Y       402       D402Y</span></span>
+<span><span class="co">##   [2]            GGT            GGG             G             G       396       G396G</span></span>
+<span><span class="co">##   [3]            CCG            CCT             P             P       362       P362P</span></span>
+<span><span class="co">##   [4]            GCC           TGCC                                   627         627</span></span>
 <span><span class="co">##   -------</span></span>
 <span><span class="co">##   seqinfo: 128 sequences from gencode.v36.txs genome</span></span></code></pre>
 </div>
-<div class="section level5">
-<h5 id="mapping-locus-with-features-of-variants-">Mapping locus with features of Variants.<a class="anchor" aria-label="anchor" href="#mapping-locus-with-features-of-variants-"></a>
-</h5>
+</div>
+<div class="section level4">
+<h4 id="mapping-locus-with-features-of-variants-">Mapping locus with features of Variants.<a class="anchor" aria-label="anchor" href="#mapping-locus-with-features-of-variants-"></a>
+</h4>
 <p><code><a href="https://rdrr.io/pkg/bamSliceR/man/getGenCodeAnnotation.Txs.html" class="external-link">getGenCodeAnnotation.Txs()</a></code> will map the locus with
 features of variants also from GENCODE annotation file in GFF3 format
 that contains information of both genomic and transcriptome coordinates.
 But this function not only focus on CDS regions, but also UTR/STOP/START
 regions. Further, it will match the transcriptome coordinates of locus
 with genomic coordinates.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leu.tallied.reads.gencode</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/getGenCodeAnnotation.Txs.html" class="external-link">getGenCodeAnnotation.Txs</a></span><span class="op">(</span><span class="va">leu.tallied.reads</span>, </span>
 <span>                                                     gencode.file.txs <span class="op">=</span> <span class="va">gencode.v36.txs.file</span><span class="op">)</span></span>
 <span><span class="va">leu.tallied.reads.gencode</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UPC_ID"</span>,<span class="fu">bamSliceR</span><span class="fu">:::</span><span class="va">.GRvsTXS_INFO</span> <span class="op">)</span><span class="op">]</span></span></code></pre></div>
@@ -899,131 +1028,90 @@ with genomic coordinates.</p>
 <span><span class="co">##   seqinfo: 128 sequences from gencode.v36.txs genome</span></span>
 <span><span class="co">##   hardFilters: NULL</span></span></code></pre>
 </div>
-<div class="section level5">
-<h5 id="merge-annotation-results-from-two-sources">Merge annotation results from two sources<a class="anchor" aria-label="anchor" href="#merge-annotation-results-from-two-sources"></a>
-</h5>
+<div class="section level4">
+<h4 id="merge-annotation-results-from-two-sources">Merge annotation results from two sources<a class="anchor" aria-label="anchor" href="#merge-annotation-results-from-two-sources"></a>
+</h4>
 <p>In practice, <code><a href="https://rdrr.io/pkg/bamSliceR/man/getVariantAnnotationForTxs.html" class="external-link">getVariantAnnotationForTxs()</a></code> can be used to
 retrieve annotation results from both sources.</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">leu.tallied.reads.annoted</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/getVariantAnnotationForTxs.html" class="external-link">getVariantAnnotationForTxs</a></span><span class="op">(</span>gencode.file.txs <span class="op">=</span> <span class="va">gencode.v36.txs.file</span>, </span>
 <span>                                                       seqSource <span class="op">=</span> <span class="va">seqSource</span>,</span>
 <span>                                                       query.ranges <span class="op">=</span> <span class="va">leu.tallied.reads</span><span class="op">)</span></span>
-<span><span class="va">leu.tallied.reads.annoted</span></span></code></pre></div>
-<pre><code><span><span class="co">## GRanges object with 53971 ranges and 37 metadata columns:</span></span>
-<span><span class="co">##                    seqnames    ranges strand |         ref         alt totalDepth</span></span>
-<span><span class="co">##                       &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt; &lt;character&gt;  &lt;integer&gt;</span></span>
-<span><span class="co">##       [1] ENST00000366816.5   536-537      * |          CA           C          4</span></span>
-<span><span class="co">##       [2] ENST00000366816.5       578      * |           C          CT         20</span></span>
-<span><span class="co">##       [3] ENST00000366816.5       654      * |           C          CT         11</span></span>
-<span><span class="co">##       [4] ENST00000366816.5       774      * |           A           G        377</span></span>
-<span><span class="co">##       [5] ENST00000366814.3        20      * |           A           C        118</span></span>
-<span><span class="co">##       ...               ...       ...    ... .         ...         ...        ...</span></span>
-<span><span class="co">##   [53967] ENST00000358356.9       176      * |           G          GT          6</span></span>
-<span><span class="co">##   [53968] ENST00000358356.9      1433      * |           A           C         22</span></span>
-<span><span class="co">##   [53969] ENST00000358356.9      1439      * |           G          GC          5</span></span>
-<span><span class="co">##   [53970] ENST00000358356.9      1449      * |           A           C         20</span></span>
-<span><span class="co">##   [53971] ENST00000358356.9      1517      * |           G           A         15</span></span>
-<span><span class="co">##            refDepth  altDepth       VAF      sample              file_name     case_id</span></span>
-<span><span class="co">##           &lt;integer&gt; &lt;integer&gt; &lt;numeric&gt; &lt;character&gt;            &lt;character&gt; &lt;character&gt;</span></span>
-<span><span class="co">##       [1]         0         4 1.0000000      02H053 02H053.RNAseq.gencod..      02H053</span></span>
-<span><span class="co">##       [2]         0        20 1.0000000      02H053 02H053.RNAseq.gencod..      02H053</span></span>
-<span><span class="co">##       [3]         0        11 1.0000000      02H053 02H053.RNAseq.gencod..      02H053</span></span>
-<span><span class="co">##       [4]       355        19 0.0503979      02H053 02H053.RNAseq.gencod..      02H053</span></span>
-<span><span class="co">##       [5]       112         6 0.0508475      02H053 02H053.RNAseq.gencod..      02H053</span></span>
-<span><span class="co">##       ...       ...       ...       ...         ...                    ...         ...</span></span>
-<span><span class="co">##   [53967]         0         6  1.000000      14H071 14H071.RNAseq.gencod..      14H071</span></span>
-<span><span class="co">##   [53968]        15         4  0.181818      14H071 14H071.RNAseq.gencod..      14H071</span></span>
-<span><span class="co">##   [53969]         0         5  1.000000      14H071 14H071.RNAseq.gencod..      14H071</span></span>
-<span><span class="co">##   [53970]        16         4  0.200000      14H071 14H071.RNAseq.gencod..      14H071</span></span>
-<span><span class="co">##   [53971]         8         7  0.466667      14H071 14H071.RNAseq.gencod..      14H071</span></span>
-<span><span class="co">##                     sample_type  experimental_strategy   downloaded_file_name      UPC_ID</span></span>
-<span><span class="co">##                     &lt;character&gt;            &lt;character&gt;            &lt;character&gt; &lt;character&gt;</span></span>
-<span><span class="co">##       [1] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 02H053.RNAseq.gencod..      02H053</span></span>
-<span><span class="co">##       [2] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 02H053.RNAseq.gencod..      02H053</span></span>
-<span><span class="co">##       [3] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 02H053.RNAseq.gencod..      02H053</span></span>
-<span><span class="co">##       [4] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 02H053.RNAseq.gencod..      02H053</span></span>
-<span><span class="co">##       [5] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 02H053.RNAseq.gencod..      02H053</span></span>
-<span><span class="co">##       ...                   ...                    ...                    ...         ...</span></span>
-<span><span class="co">##   [53967] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 14H071.RNAseq.gencod..      14H071</span></span>
-<span><span class="co">##   [53968] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 14H071.RNAseq.gencod..      14H071</span></span>
-<span><span class="co">##   [53969] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 14H071.RNAseq.gencod..      14H071</span></span>
-<span><span class="co">##   [53970] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 14H071.RNAseq.gencod..      14H071</span></span>
-<span><span class="co">##   [53971] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 14H071.RNAseq.gencod..      14H071</span></span>
-<span><span class="co">##                varAllele    CDSLOC    PROTEINLOC   QUERYID        TXID         CDSID</span></span>
-<span><span class="co">##           &lt;DNAStringSet&gt; &lt;IRanges&gt; &lt;IntegerList&gt; &lt;integer&gt; &lt;character&gt; &lt;IntegerList&gt;</span></span>
-<span><span class="co">##       [1]              C   192-193         64,65         1          22           212</span></span>
-<span><span class="co">##       [2]             CT       234            78         2          22           212</span></span>
-<span><span class="co">##       [3]             CT       310           104         3          22           213</span></span>
-<span><span class="co">##       [4]              N        -1          &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;</span></span>
-<span><span class="co">##       [5]              N        -1          &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;</span></span>
-<span><span class="co">##       ...            ...       ...           ...       ...         ...           ...</span></span>
-<span><span class="co">##   [53967]              N        -1          &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;</span></span>
-<span><span class="co">##   [53968]              N        -1          &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;</span></span>
-<span><span class="co">##   [53969]              N        -1          &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;</span></span>
-<span><span class="co">##   [53970]              N        -1          &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;</span></span>
-<span><span class="co">##   [53971]              N        -1          &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;</span></span>
-<span><span class="co">##                       GENEID CONSEQUENCE       REFCODON       VARCODON         REFAA</span></span>
-<span><span class="co">##                  &lt;character&gt; &lt;character&gt; &lt;DNAStringSet&gt; &lt;DNAStringSet&gt; &lt;AAStringSet&gt;</span></span>
-<span><span class="co">##       [1] ENSG00000163041.13  frameshift         CGCAAA          CGCAA              </span></span>
-<span><span class="co">##       [2] ENSG00000163041.13  frameshift            GAC           GACT              </span></span>
-<span><span class="co">##       [3] ENSG00000163041.13  frameshift            CTT           CTTT              </span></span>
-<span><span class="co">##       [4] ENSG00000163041.13        &lt;NA&gt;              N              N             N</span></span>
-<span><span class="co">##       [5] ENSG00000163041.13        &lt;NA&gt;              N              N             N</span></span>
-<span><span class="co">##       ...                ...         ...            ...            ...           ...</span></span>
-<span><span class="co">##   [53967] ENSG00000159216.19        &lt;NA&gt;              N              N             N</span></span>
-<span><span class="co">##   [53968] ENSG00000159216.19        &lt;NA&gt;              N              N             N</span></span>
-<span><span class="co">##   [53969] ENSG00000159216.19        &lt;NA&gt;              N              N             N</span></span>
-<span><span class="co">##   [53970] ENSG00000159216.19        &lt;NA&gt;              N              N             N</span></span>
-<span><span class="co">##   [53971] ENSG00000159216.19        &lt;NA&gt;              N              N             N</span></span>
-<span><span class="co">##                   VARAA       POS      CHANGE      SYMBOL       HGVSP g_exon_number</span></span>
-<span><span class="co">##           &lt;AAStringSet&gt; &lt;integer&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;   &lt;character&gt;</span></span>
-<span><span class="co">##       [1]                      64          64       H3-3A     H3-3A64             4</span></span>
-<span><span class="co">##       [2]                      78          78       H3-3A     H3-3A78             4</span></span>
-<span><span class="co">##       [3]                     104         104       H3-3A    H3-3A104             5</span></span>
-<span><span class="co">##       [4]             N      &lt;NA&gt;        &lt;NA&gt;       H3-3A        &lt;NA&gt;             5</span></span>
-<span><span class="co">##       [5]             N      &lt;NA&gt;        &lt;NA&gt;       H3-3A        &lt;NA&gt;             1</span></span>
-<span><span class="co">##       ...           ...       ...         ...         ...         ...           ...</span></span>
-<span><span class="co">##   [53967]             N      &lt;NA&gt;        &lt;NA&gt;       RUNX1        &lt;NA&gt;             1</span></span>
-<span><span class="co">##   [53968]             N      &lt;NA&gt;        &lt;NA&gt;       RUNX1        &lt;NA&gt;             1</span></span>
-<span><span class="co">##   [53969]             N      &lt;NA&gt;        &lt;NA&gt;       RUNX1        &lt;NA&gt;             1</span></span>
-<span><span class="co">##   [53970]             N      &lt;NA&gt;        &lt;NA&gt;       RUNX1        &lt;NA&gt;             1</span></span>
-<span><span class="co">##   [53971]             N      &lt;NA&gt;        &lt;NA&gt;       RUNX1        &lt;NA&gt;             1</span></span>
-<span><span class="co">##                   g_exon_id     g_seqid   g_start     g_end    g_strand         g_isCDS</span></span>
-<span><span class="co">##                 &lt;character&gt; &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt;     &lt;character&gt;</span></span>
-<span><span class="co">##       [1] ENSE00002355903.1        chr1 226065719 226065720           +             CDS</span></span>
-<span><span class="co">##       [2] ENSE00002355903.1        chr1 226065761 226065761           +             CDS</span></span>
-<span><span class="co">##       [3] ENSE00001381318.2        chr1 226071378 226071378           +             CDS</span></span>
-<span><span class="co">##       [4] ENSE00001381318.2        chr1 226071498 226071498           + three_prime_UTR</span></span>
-<span><span class="co">##       [5] ENSE00001442673.3        chr1 226062733 226062733           +  five_prime_UTR</span></span>
-<span><span class="co">##       ...               ...         ...       ...       ...         ...             ...</span></span>
-<span><span class="co">##   [53967] ENSE00001380483.1       chr21  34888515  34888515           -  five_prime_UTR</span></span>
-<span><span class="co">##   [53968] ENSE00001380483.1       chr21  34887258  34887258           -  five_prime_UTR</span></span>
-<span><span class="co">##   [53969] ENSE00001380483.1       chr21  34887252  34887252           -  five_prime_UTR</span></span>
-<span><span class="co">##   [53970] ENSE00001380483.1       chr21  34887242  34887242           -  five_prime_UTR</span></span>
-<span><span class="co">##   [53971] ENSE00001380483.1       chr21  34887174  34887174           -  five_prime_UTR</span></span>
-<span><span class="co">##               g_isSSC</span></span>
-<span><span class="co">##           &lt;character&gt;</span></span>
-<span><span class="co">##       [1]        &lt;NA&gt;</span></span>
-<span><span class="co">##       [2]        &lt;NA&gt;</span></span>
-<span><span class="co">##       [3]        &lt;NA&gt;</span></span>
-<span><span class="co">##       [4]        &lt;NA&gt;</span></span>
-<span><span class="co">##       [5]        &lt;NA&gt;</span></span>
-<span><span class="co">##       ...         ...</span></span>
-<span><span class="co">##   [53967]        &lt;NA&gt;</span></span>
-<span><span class="co">##   [53968]        &lt;NA&gt;</span></span>
-<span><span class="co">##   [53969]        &lt;NA&gt;</span></span>
-<span><span class="co">##   [53970]        &lt;NA&gt;</span></span>
-<span><span class="co">##   [53971]        &lt;NA&gt;</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">leu.tallied.reads.annoted</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## GRanges object with 6 ranges and 37 metadata columns:</span></span>
+<span><span class="co">##                seqnames    ranges strand |         ref         alt totalDepth  refDepth</span></span>
+<span><span class="co">##                   &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt; &lt;character&gt;  &lt;integer&gt; &lt;integer&gt;</span></span>
+<span><span class="co">##   [1] ENST00000366816.5   536-537      * |          CA           C          4         0</span></span>
+<span><span class="co">##   [2] ENST00000366816.5       578      * |           C          CT         20         0</span></span>
+<span><span class="co">##   [3] ENST00000366816.5       654      * |           C          CT         11         0</span></span>
+<span><span class="co">##   [4] ENST00000366816.5       774      * |           A           G        377       355</span></span>
+<span><span class="co">##   [5] ENST00000366814.3        20      * |           A           C        118       112</span></span>
+<span><span class="co">##   [6] ENST00000366814.3        97      * |           G       GGGTA         13         0</span></span>
+<span><span class="co">##        altDepth       VAF      sample              file_name     case_id</span></span>
+<span><span class="co">##       &lt;integer&gt; &lt;numeric&gt; &lt;character&gt;            &lt;character&gt; &lt;character&gt;</span></span>
+<span><span class="co">##   [1]         4 1.0000000      02H053 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##   [2]        20 1.0000000      02H053 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##   [3]        11 1.0000000      02H053 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##   [4]        19 0.0503979      02H053 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##   [5]         6 0.0508475      02H053 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##   [6]        13 1.0000000      02H053 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##                 sample_type  experimental_strategy   downloaded_file_name      UPC_ID</span></span>
+<span><span class="co">##                 &lt;character&gt;            &lt;character&gt;            &lt;character&gt; &lt;character&gt;</span></span>
+<span><span class="co">##   [1] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##   [2] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##   [3] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##   [4] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##   [5] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##   [6] Bone marrow_Diagnosis RNA-Seq STAR 2-Pass .. 02H053.RNAseq.gencod..      02H053</span></span>
+<span><span class="co">##            varAllele    CDSLOC    PROTEINLOC   QUERYID        TXID         CDSID</span></span>
+<span><span class="co">##       &lt;DNAStringSet&gt; &lt;IRanges&gt; &lt;IntegerList&gt; &lt;integer&gt; &lt;character&gt; &lt;IntegerList&gt;</span></span>
+<span><span class="co">##   [1]              C   192-193         64,65         1          22           212</span></span>
+<span><span class="co">##   [2]             CT       234            78         2          22           212</span></span>
+<span><span class="co">##   [3]             CT       310           104         3          22           213</span></span>
+<span><span class="co">##   [4]              N        -1          &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;</span></span>
+<span><span class="co">##   [5]              N        -1          &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;</span></span>
+<span><span class="co">##   [6]              N        -1          &lt;NA&gt;      &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;</span></span>
+<span><span class="co">##                   GENEID CONSEQUENCE       REFCODON       VARCODON         REFAA</span></span>
+<span><span class="co">##              &lt;character&gt; &lt;character&gt; &lt;DNAStringSet&gt; &lt;DNAStringSet&gt; &lt;AAStringSet&gt;</span></span>
+<span><span class="co">##   [1] ENSG00000163041.13  frameshift         CGCAAA          CGCAA              </span></span>
+<span><span class="co">##   [2] ENSG00000163041.13  frameshift            GAC           GACT              </span></span>
+<span><span class="co">##   [3] ENSG00000163041.13  frameshift            CTT           CTTT              </span></span>
+<span><span class="co">##   [4] ENSG00000163041.13        &lt;NA&gt;              N              N             N</span></span>
+<span><span class="co">##   [5] ENSG00000163041.13        &lt;NA&gt;              N              N             N</span></span>
+<span><span class="co">##   [6] ENSG00000163041.13        &lt;NA&gt;              N              N             N</span></span>
+<span><span class="co">##               VARAA       POS      CHANGE      SYMBOL       HGVSP g_exon_number</span></span>
+<span><span class="co">##       &lt;AAStringSet&gt; &lt;integer&gt; &lt;character&gt; &lt;character&gt; &lt;character&gt;   &lt;character&gt;</span></span>
+<span><span class="co">##   [1]                      64          64       H3-3A     H3-3A64             4</span></span>
+<span><span class="co">##   [2]                      78          78       H3-3A     H3-3A78             4</span></span>
+<span><span class="co">##   [3]                     104         104       H3-3A    H3-3A104             5</span></span>
+<span><span class="co">##   [4]             N      &lt;NA&gt;        &lt;NA&gt;       H3-3A        &lt;NA&gt;             5</span></span>
+<span><span class="co">##   [5]             N      &lt;NA&gt;        &lt;NA&gt;       H3-3A        &lt;NA&gt;             1</span></span>
+<span><span class="co">##   [6]             N      &lt;NA&gt;        &lt;NA&gt;       H3-3A        &lt;NA&gt;             1</span></span>
+<span><span class="co">##               g_exon_id     g_seqid   g_start     g_end    g_strand         g_isCDS</span></span>
+<span><span class="co">##             &lt;character&gt; &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;character&gt;     &lt;character&gt;</span></span>
+<span><span class="co">##   [1] ENSE00002355903.1        chr1 226065719 226065720           +             CDS</span></span>
+<span><span class="co">##   [2] ENSE00002355903.1        chr1 226065761 226065761           +             CDS</span></span>
+<span><span class="co">##   [3] ENSE00001381318.2        chr1 226071378 226071378           +             CDS</span></span>
+<span><span class="co">##   [4] ENSE00001381318.2        chr1 226071498 226071498           + three_prime_UTR</span></span>
+<span><span class="co">##   [5] ENSE00001442673.3        chr1 226062733 226062733           +  five_prime_UTR</span></span>
+<span><span class="co">##   [6] ENSE00001442673.3        chr1 226062810 226062810           +  five_prime_UTR</span></span>
+<span><span class="co">##           g_isSSC</span></span>
+<span><span class="co">##       &lt;character&gt;</span></span>
+<span><span class="co">##   [1]        &lt;NA&gt;</span></span>
+<span><span class="co">##   [2]        &lt;NA&gt;</span></span>
+<span><span class="co">##   [3]        &lt;NA&gt;</span></span>
+<span><span class="co">##   [4]        &lt;NA&gt;</span></span>
+<span><span class="co">##   [5]        &lt;NA&gt;</span></span>
+<span><span class="co">##   [6]        &lt;NA&gt;</span></span>
 <span><span class="co">##   -------</span></span>
 <span><span class="co">##   seqinfo: 128 sequences from gencode.v36.txs genome</span></span></code></pre>
-</div>
 </div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="using-genomic-vaf-as-prior-to-infer-transcripts-vaf">Using Genomic VAF as Prior to Infer Transcripts’ VAF<a class="anchor" aria-label="anchor" href="#using-genomic-vaf-as-prior-to-infer-transcripts-vaf"></a>
 </h2>
-<p><img src="BamSlicer_transcripts.png" width="550"></p>
+<p><img src="BamSlicer_transcripts.png" width="900"></p>
 <p>We now have both Genomic and Transcriptome annotation for each
 variants. Specifically, We know the ref and alt read counts and VAF from
 genomic alignment that mapped reads to the linear reference genome. We
@@ -1044,7 +1132,7 @@ t_{\text{VAF}} \approx g_{\text{VAF}} \sim \text{Beta}(g_{\text{depth_alt}}, g_{
 t_{\text{depth_alt}} \sim \text{Binom}(t_{\text{depth_total}}, g_{\text{VAF}})
 </annotation></semantics></math></p>
 <p>For example:</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#contains all recurrent variants that compatible with more than one transcripts</span></span>
 <span><span class="va">gVSt_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"GvsT_recurrent_multiTxs_list.rds"</span>, </span>
 <span>                             package <span class="op">=</span> <span class="st">"bamSliceR"</span><span class="op">)</span></span>
@@ -1084,7 +1172,7 @@ t_{\text{depth_alt}} \sim \text{Binom}(t_{\text{depth_total}}, g_{\text{VAF}})
 <span><span class="co">## 2  90085321  90085321              T chr15:90085321:90085..</span></span>
 <span><span class="co">## 3  90085321  90085321              T chr15:90085321:90085..</span></span>
 <span><span class="co">## 4  90085321  90085321              T chr15:90085321:90085..</span></span></code></pre>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plotHistAsDist</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">binwidth</span> <span class="op">=</span> <span class="fl">0.001</span>, <span class="va">i</span><span class="op">)</span></span>
 <span><span class="op">{</span></span>
 <span>  <span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, average <span class="op">=</span> <span class="va">data</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
@@ -1120,8 +1208,8 @@ t_{\text{depth_alt}} \sim \text{Binom}(t_{\text{depth_total}}, g_{\text{VAF}})
 <span><span class="fu">plotHistAsDist</span><span class="op">(</span><span class="va">theta_df</span>, </span>
 <span>               binwidth <span class="op">=</span> <span class="fl">0.001</span>, </span>
 <span>               i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">theta_df</span><span class="op">)</span> <span class="op">==</span> <span class="st">"theta"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">Nrep</span>, <span class="fl">258</span>, <span class="va">g_VAF</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">10</span><span class="op">)</span> <span class="op">/</span> <span class="va">Nrep</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.000636</span></span></code></pre>
@@ -1131,7 +1219,7 @@ in TxCanHarborV (prior for Pr(V) is Pr(V|gDNA)) model 2: Pr(V|Tx in
 TxCanHarborV) != Pr(V) for all Tx in TxCanHarborV (prior as above)</p>
 <p>Example of integrating over the parameter space for the possible
 evidence:</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Approximation of integrate over the parameter space for the possible evidence</span></span>
 <span><span class="va">theta</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0.00001</span><span class="op">)</span></span>
 <span><span class="co">#p(theta|M) = p(g_VAF|beta dist) </span></span>
@@ -1145,7 +1233,7 @@ evidence:</p>
 <div class="section level4">
 <h4 id="extract-reads-from-bam-files-for-variants">Extract reads from BAM files for variants<a class="anchor" aria-label="anchor" href="#extract-reads-from-bam-files-for-variants"></a>
 </h4>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Approximation of integrate over the parameter space for the possible evidence</span></span>
 <span><span class="va">theta</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0.00001</span><span class="op">)</span></span>
 <span><span class="co">#p(theta|M) = p(g_VAF|beta dist) </span></span>
@@ -1163,167 +1251,24 @@ to be.</p>
 <p>In <code>bamSliceR</code> we provide function
 <code><a href="https://rdrr.io/pkg/bamSliceR/man/extractBasesAtPosition.html" class="external-link">extractBasesAtPosition()</a></code> to collect read names support
 either reference or alternative alleles for on each transcripts.</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#one patient one variant</span></span>
 <span><span class="va">demo</span><span class="op">[</span><span class="fl">1</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t_totalDepth"</span>, <span class="st">"t_refDepth"</span>, <span class="st">"t_altDepth"</span>, <span class="st">"t_VAF"</span>, <span class="st">"t_tseqid"</span>, <span class="st">"SYMBOL"</span>, <span class="st">"CHANGE"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 1 row and 7 columns</span></span>
 <span><span class="co">##   t_totalDepth t_refDepth t_altDepth     t_VAF          t_tseqid      SYMBOL      CHANGE</span></span>
 <span><span class="co">##      &lt;numeric&gt;  &lt;numeric&gt;  &lt;integer&gt; &lt;numeric&gt;       &lt;character&gt; &lt;character&gt; &lt;character&gt;</span></span>
 <span><span class="co">## 1          258        248         10 0.0387597 ENST00000330062.8        IDH2       E345G</span></span></code></pre>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">genomicPosition</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomicRanges/man/GRanges-class.html" class="external-link">GRanges</a></span><span class="op">(</span>seqnames <span class="op">=</span> <span class="va">demo</span><span class="op">$</span><span class="va">t_tseqid</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, </span>
 <span>                          ranges <span class="op">=</span> <span class="fu">IRanges</span><span class="op">(</span>start <span class="op">=</span> <span class="va">demo</span><span class="op">$</span><span class="va">t_tstart</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, end <span class="op">=</span> <span class="va">demo</span><span class="op">$</span><span class="va">t_tend</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">)</span></span>
 <span><span class="va">bamFile</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>,<span class="st">"02H060.RNAseq.gencode.v36.minimap2.sorted.bam"</span>,</span>
 <span>                              package <span class="op">=</span> <span class="st">"bamSliceR"</span><span class="op">)</span></span>
 <span><span class="va">readsPerTxs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/extractBasesAtPosition.html" class="external-link">extractBasesAtPosition</a></span><span class="op">(</span>bamFile <span class="op">=</span> <span class="va">bamFile</span>, which <span class="op">=</span> <span class="va">genomicPosition</span><span class="op">)</span> </span>
-<span><span class="va">readsPerTxs</span></span></code></pre></div>
-<pre><code><span><span class="co">## $`ENST00000330062.8:1112-1112`</span></span>
-<span><span class="co">##   SRR1036002.783690  SRR1036002.5369917  SRR1036002.5826130  SRR1036002.7120231 </span></span>
-<span><span class="co">##                 "A"                 "N"                 "N"                 "N" </span></span>
-<span><span class="co">##  SRR1036002.9845494 SRR1036002.10872044   SRR1036003.703114  SRR1036003.2747361 </span></span>
-<span><span class="co">##                 "N"                 "A"                 "A"                 "N" </span></span>
-<span><span class="co">##  SRR1036003.3230578  SRR1036003.4404309  SRR1036003.6838166  SRR1036003.8292353 </span></span>
-<span><span class="co">##                 "N"                 "A"                 "N"                 "A" </span></span>
-<span><span class="co">##  SRR1036003.8512427  SRR1036003.8730796 SRR1036003.11610997 SRR1036003.12223859 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "N"                 "N" </span></span>
-<span><span class="co">## SRR1036003.14157017 SRR1036003.14309633   SRR1036004.931039  SRR1036004.2440266 </span></span>
-<span><span class="co">##                 "N"                 "A"                 "N"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.2595420  SRR1036004.7709737 SRR1036004.10073485 SRR1036004.10446699 </span></span>
-<span><span class="co">##                 "A"                 "N"                 "N"                 "N" </span></span>
-<span><span class="co">## SRR1036004.11914000 SRR1036004.12937591 SRR1036004.16827290 SRR1036004.17813236 </span></span>
-<span><span class="co">##                 "N"                 "A"                 "N"                 "N" </span></span>
-<span><span class="co">## SRR1036004.17819870  SRR1036002.9787496 SRR1036002.15183448  SRR1036004.4452904 </span></span>
-<span><span class="co">##                 "N"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.9504209 SRR1036004.17085635 SRR1036002.11115650  SRR1036003.9936438 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.3467941 SRR1036004.10749192 SRR1036004.13691229 SRR1036003.14492733 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.12110240  SRR1036004.6205570  SRR1036003.7438441  SRR1036003.8846812 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.12798837 SRR1036002.10885817 SRR1036002.11417636 SRR1036003.16943974 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.3721298 SRR1036004.10446699  SRR1036002.9845494   SRR1036004.895492 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##   SRR1036004.931039  SRR1036004.7267376  SRR1036003.7926241 SRR1036004.17085635 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036003.2747361  SRR1036004.3368818  SRR1036002.3093270  SRR1036003.3415839 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.6365662 SRR1036004.10073485 SRR1036004.16740690   SRR1036003.656329 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036002.5582952  SRR1036002.8374176  SRR1036003.4404309  SRR1036003.8292353 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.1796701  SRR1036004.5376179  SRR1036004.7362440  SRR1036004.7404187 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.11512224 SRR1036004.17819870   SRR1036002.824790 SRR1036004.15654684 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036002.11582441 SRR1036004.11075009 SRR1036002.14566531  SRR1036003.6885114 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036003.13054200  SRR1036004.8430013 SRR1036004.11075009 SRR1036004.15883659 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.16751201 SRR1036002.13602562 SRR1036004.10702636 SRR1036004.10574209 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.12110240   SRR1036002.204421  SRR1036003.1185139  SRR1036003.7427261 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036003.14739762   SRR1036002.562197  SRR1036004.3368818 SRR1036004.10635859 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036003.14157017 SRR1036004.11914000 SRR1036003.13095407 SRR1036003.15135877 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036002.12971980 SRR1036004.13991045 SRR1036003.16129341 SRR1036004.14032302 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.16553873  SRR1036003.9018682 SRR1036003.13275673   SRR1036004.972548 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.16138401   SRR1036002.783690  SRR1036002.7120231 SRR1036003.10199413 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.13991045 SRR1036003.12520045 SRR1036004.10736094  SRR1036004.6824247 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036002.8176041  SRR1036004.7152043 SRR1036004.11772029 SRR1036003.11581164 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036002.6639818  SRR1036002.9722833  SRR1036003.1114091   SRR1036004.105132 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.2259050  SRR1036003.4243873  SRR1036002.2053273 SRR1036002.10491511 </span></span>
-<span><span class="co">##                 "A"                 "G"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036003.13174582  SRR1036004.5189625 SRR1036004.10574209 SRR1036004.17027397 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036002.9104035 SRR1036003.13253910  SRR1036004.9995235  SRR1036003.8130841 </span></span>
-<span><span class="co">##                 "G"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.16746733  SRR1036002.5454556  SRR1036002.5985075  SRR1036002.7526474 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036002.12124626 SRR1036003.12486621  SRR1036004.9693071  SRR1036002.3288458 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036003.14078780  SRR1036004.2022751  SRR1036004.3276825  SRR1036004.4222601 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.15453079 SRR1036004.17636127  SRR1036004.4222601 SRR1036004.16768051 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.14161933 SRR1036004.17104961  SRR1036004.7709737  SRR1036002.2399802 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.11151868 SRR1036004.14507095  SRR1036003.1801959  SRR1036004.2259050 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036003.15777934 SRR1036004.11541873 SRR1036003.14309633  SRR1036002.4055841 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "G"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.5951031 SRR1036003.14496061   SRR1036003.514521  SRR1036003.5659382 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036003.14492733  SRR1036004.2352584  SRR1036004.5820591 SRR1036002.11062621 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "G" </span></span>
-<span><span class="co">## SRR1036004.10863389  SRR1036002.2337142  SRR1036002.3684709  SRR1036002.5253455 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036003.3093416 SRR1036003.15241212 SRR1036004.12632502 SRR1036004.14461430 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.17488992  SRR1036002.5826130  SRR1036004.8900814  SRR1036002.4901783 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036003.5966318  SRR1036003.8717223  SRR1036003.8841569 SRR1036003.10660949 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##    SRR1036004.92225  SRR1036004.1898132  SRR1036004.6652692  SRR1036003.5610293 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036003.7963965  SRR1036004.5559747  SRR1036002.5985075 SRR1036002.12937067 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "G"                 "G" </span></span>
-<span><span class="co">##   SRR1036003.703114  SRR1036003.3230578  SRR1036004.2595420 SRR1036004.16827290 </span></span>
-<span><span class="co">##                 "A"                 "G"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.17488992  SRR1036002.1126539 SRR1036002.13790654   SRR1036002.824790 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036003.15979892 SRR1036004.15654684    SRR1036003.51953  SRR1036004.3681927 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.4863399  SRR1036002.2205272   SRR1036003.344887 SRR1036002.13131475 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036003.15394016  SRR1036004.9883158 SRR1036004.17608274  SRR1036002.6092588 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036002.8628472 SRR1036003.11459278 SRR1036003.16577918 SRR1036004.13310300 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.14228435  SRR1036003.5610293   SRR1036004.105132    SRR1036003.51953 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036003.8227110 SRR1036004.15499542 SRR1036002.10567041  SRR1036003.3356186 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036003.9914025  SRR1036004.4165507 SRR1036003.10982146  SRR1036002.4055841 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036003.3448115  SRR1036003.3448115  SRR1036002.9264071   SRR1036004.582809 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036004.16494915 SRR1036003.10660949  SRR1036004.5560743 SRR1036004.15734787 </span></span>
-<span><span class="co">##                 "A"                 "G"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036002.2817932  SRR1036002.2988522  SRR1036002.8861162  SRR1036002.9386717 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">## SRR1036002.13405198 SRR1036002.15198491 SRR1036003.14197122  SRR1036004.3956108 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036002.2988522  SRR1036002.8279007  SRR1036003.7574616 SRR1036004.10994618 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036003.6328142 SRR1036004.12302444   SRR1036003.234688 SRR1036003.12414103 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036002.7605973  SRR1036002.6511468  SRR1036003.3563934  SRR1036004.5820591 </span></span>
-<span><span class="co">##                 "G"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036003.8493330  SRR1036002.6092588  SRR1036003.6939641  SRR1036003.9048544 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.4993312  SRR1036004.7525938  SRR1036002.9897634  SRR1036003.2368048 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.7824771 SRR1036004.17859222  SRR1036004.4863399 SRR1036002.13916787 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "A" </span></span>
-<span><span class="co">##  SRR1036004.2272987 SRR1036003.12741190 SRR1036003.15358661  SRR1036003.8417231 </span></span>
-<span><span class="co">##                 "A"                 "A"                 "A"                 "N" </span></span>
-<span><span class="co">##  SRR1036004.7152043 </span></span>
-<span><span class="co">##                 "G"</span></span></code></pre>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">readsPerTxs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">readsPerTxs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##   A   G   N </span></span>
 <span><span class="co">## 248  10  19</span></span></code></pre>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.4.1 (2024-06-14)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
