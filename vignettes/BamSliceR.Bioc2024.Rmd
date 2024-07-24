@@ -47,7 +47,9 @@ and reanalyze raw sequence data, which is highly inefficient.
 # `bamSliceR` pipeline
 
 ![](bamSliceR_workflow.png){width=550px height=432px}
-## If you will be analyzing any data that is controlled access, you will need to download a GDC token and store it in a file in your home directory. For more instructions see [GenomicDataCommons Token](https://www.bioconductor.org/packages/devel/bioc/vignettes/GenomicDataCommons/inst/doc/overview.html#authentication) and [Data portal authentication tokens](https://docs.gdc.cancer.gov/Data_Portal/Users_Guide/Cart/#gdc-authentication-tokens)
+
+
+## \* If you will be analyzing any data that is controlled access, you will need to download a GDC token and store it in a file in your home directory. For more instructions see [GenomicDataCommons Token](https://www.bioconductor.org/packages/devel/bioc/vignettes/GenomicDataCommons/inst/doc/overview.html#authentication) and [Data portal authentication tokens](https://docs.gdc.cancer.gov/Data_Portal/Users_Guide/Cart/#gdc-authentication-tokens)
 
 
 # Set-up
@@ -143,7 +145,7 @@ Allele Fraction (VAF) of each variants.
 We first also need to specify the regions as a `GRanges` object, which can be
 a subset of genomic ranges used to sliced BAM files.
 
-```{r message=FALSE}
+```{r range_tv, message=FALSE}
 head(target_ranges_gr)
 ```
 
@@ -154,7 +156,8 @@ BAM files.
 ![bamfiles](bamfiles.png){width=400px height=200px}
 
 
-terminal `command`
+
+Terminal `command`
 ```{bash, eval=FALSE}
 cd DIR_BAM_FILES
 ls | grep bam$ > bamfiles
@@ -162,7 +165,7 @@ ls | grep bam$ > bamfiles
 
 In the directory of the downloaded BAM files, we then `scan` the 'bamfiles' into R.
 
-```{r message=FALSE, eval = FALSE}
+```{r bamfiles, message=FALSE, eval = FALSE}
 bamfiles_txt = system.file("extdata", "bamfiles", package = "bamSliceR")
 bamfiles = scan(bamfiles_txt, "character")
 ```
@@ -171,7 +174,7 @@ bamfiles = scan(bamfiles_txt, "character")
 Last thing we need is to create a `gmapGenome` object, then specify the directory 
 of it.
 
-```{r message=FALSE, eval = FALSE}
+```{r gmapGenome, message=FALSE, eval = FALSE}
 #GmapGenome objects can be created from FASTA files or BSgenome objects. Below is 
 #an example of how to create human hg38 gmapGenome from BSgenome.
 
@@ -200,7 +203,7 @@ If we want to tally reads on thousands of BAM but only few gene regions,
 ideally we want to put more workers on computing on BAM files but 
 less workers on granges regions.
 
-```{r message=FALSE, eval = FALSE}
+```{r tr, message=FALSE, eval = FALSE}
 tallied_reads = tallyReads(bamfiles = bamfiles, gmapGenome_dir = gmapGenome_dir, 
                            grs = target_ranges,
                            BPPARAM = MulticoreParam(workers = 4 , stop.on.error = TRUE),
@@ -224,7 +227,7 @@ variants with predicted consequence using
 
 We started from a `VRanges` output from `tallyReads()`.
 
-```{r message=FALSE,  warning=FALSE, echo='hide'}
+```{r pre_annot,message=FALSE,  warning=FALSE, echo='hide'}
 library(bamSliceR)
 tallied_reads = system.file("extdata", "tallied_reads_example.rds", 
                             package = "bamSliceR")
@@ -249,7 +252,7 @@ tallied_reads_vrinfo_baminfo = subset(tallied_reads_vrinfo_baminfo, VAF > 0.05)
 ### VariantAnnotation ###
 Consequence of variants now can be predicted using [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html):
 
-```{r message=FALSE,  warning=FALSE, echo='hide'}
+```{r varAnnot, message=FALSE,  warning=FALSE, echo='hide'}
 
 getVariantAnnotation(tallied_reads_vrinfo_baminfo) -> tallied_reads_vrinfo_baminfo_gr
 tallied_reads_vrinfo_baminfo_gr[,c("UPC_ID", bamSliceR:::.VARIANT_ANNOTATE_INFO)]
@@ -260,7 +263,7 @@ tallied_reads_vrinfo_baminfo_gr[,c("UPC_ID", bamSliceR:::.VARIANT_ANNOTATE_INFO)
 
 Consequence of variants also can be predicted using Variant Effect Predictor ([VEP](https://useast.ensembl.org/info/docs/tools/vep/index.html)).
 The code below shows how to generate VCF file as input for VEP:
-```{r message=FALSE,  warning=FALSE, echo='hide'}
+```{r vepAnnot, message=FALSE,  warning=FALSE, echo='hide'}
 gr2vrforVEP(tallied_reads_vrinfo_baminfo, file = "~/INPUT_VCF_FILE.vcf", 
             writeToVcf = TRUE) -> vr
 
@@ -270,7 +273,7 @@ head(vr)
 Details about how to run Variant Effect Predictor can be found in ([ensemblVEP](https://bioconductor.org/packages/release/bioc/html/ensemblVEP.html)) or ([VEP](https://useast.ensembl.org/info/docs/tools/vep/index.html)).
 
 The VCF file with variant effect predicted can be annotated back to patients' variants.
-```{r message=FALSE,  warning=FALSE, echo='hide', eval=FALSE}
+```{r vepcsq, message=FALSE,  warning=FALSE, echo='hide', eval=FALSE}
 #Example vcf file with variant effect predicted.
 # Output VCF file from VEP
 vep_file = system.file("extdata", "TARGET_AML_VRforVEP_vep.vcf", package = "bamSliceR")
@@ -287,7 +290,7 @@ tallied_reads_vrinfo_baminfo_annotated_gr[1523:1525,-c(1:17)]
 
 ### Missing Reference Read Counts for INDELs in `tallyreads()`
 
-```{r message=FALSE,  warning=FALSE, echo='hide', eval=FALSE}
+```{r indelMiss, message=FALSE,  warning=FALSE, echo='hide', eval=FALSE}
 indels = subset(tallied_reads_vrinfo_baminfo_annotated_gr, 
                 bamSliceR:::getVarType(tallied_reads_vrinfo_baminfo_annotated_gr) != "SNP")
 summary(indels$VAF)
@@ -304,7 +307,7 @@ to help user to investigate the Variant Allele Frequency of the selected variant
 ### Distribution of VAF 
 
 By default, the `plotVAF` would plot the distribution of VAF in top genes.
-```{r message=FALSE,  warning=FALSE, echo='hide' }
+```{r dist_VAF, message=FALSE,  warning=FALSE, echo='hide' }
 library(bamSliceR)
 
 TARGET_AML_RNA_annotated_file = system.file("extdata", "TARGET_AML_RNA_annotated.gr.rds", 
