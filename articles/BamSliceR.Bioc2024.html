@@ -106,12 +106,15 @@ highly inefficient.</p>
 <h2 id="bamslicer-pipeline">
 <code>bamSliceR</code> pipeline<a class="anchor" aria-label="anchor" href="#bamslicer-pipeline"></a>
 </h2>
-<p><img src="bamSliceR_workflow.png" width="550" height="432"> ## If
-you will be analyzing any data that is controlled access, you will need
-to download a GDC token and store it in a file in your home directory.
-For more instructions see <a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/GenomicDataCommons/inst/doc/overview.html#authentication" class="external-link">GenomicDataCommons
+<p><img src="bamSliceR_workflow.png" width="550" height="432"></p>
+<div class="section level3">
+<h3 id="if-you-will-be-analyzing-any-data-that-is-controlled-access-you-will-need-to-download-a-gdc-token-and-store-it-in-a-file-in-your-home-directory--for-more-instructions-see-genomicdatacommons-token-and-data-portal-authentication-tokens">* If you will be analyzing any data that is controlled access, you
+will need to download a GDC token and store it in a file in your home
+directory. For more instructions see <a href="https://www.bioconductor.org/packages/devel/bioc/vignettes/GenomicDataCommons/inst/doc/overview.html#authentication" class="external-link">GenomicDataCommons
 Token</a> and <a href="https://docs.gdc.cancer.gov/Data_Portal/Users_Guide/Cart/#gdc-authentication-tokens" class="external-link">Data
-portal authentication tokens</a></p>
+portal authentication tokens</a><a class="anchor" aria-label="anchor" href="#if-you-will-be-analyzing-any-data-that-is-controlled-access-you-will-need-to-download-a-gdc-token-and-store-it-in-a-file-in-your-home-directory--for-more-instructions-see-genomicdatacommons-token-and-data-portal-authentication-tokens"></a>
+</h3>
+</div>
 </div>
 <div class="section level2">
 <h2 id="set-up">Set-up<a class="anchor" aria-label="anchor" href="#set-up"></a>
@@ -305,7 +308,7 @@ BAM files.</p>
 <div class="float">
 <img src="bamfiles.png" width="400" height="200" alt="bamfiles"><div class="figcaption">bamfiles</div>
 </div>
-<p>terminal <code>command</code></p>
+<p>Terminal <code>command</code></p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="bu">cd</span> DIR_BAM_FILES</span>
 <span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="fu">ls</span> <span class="kw">|</span> <span class="fu">grep</span> bam$ <span class="op">&gt;</span> bamfiles</span></code></pre></div>
 <p>In the directory of the downloaded BAM files, we then
@@ -624,14 +627,14 @@ VAF in top genes.</p>
 <span></span>
 <span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">TARGET_AML_RNA_annotated_file</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span>, title <span class="op">=</span> <span class="st">"Default: VAF of Top genes"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="BamSliceR.Bioc2024_files/figure-html/dist_VAF-1.png" width="700"></p>
 <p>By specifying single gene and multiple coordinates against the gene
 products, the <code><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF()</a></code> would plot distribution of VAF in
 selected loci of the gene.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF</a></span><span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span>, genes <span class="op">=</span> <span class="st">"IDH2"</span>, </span>
 <span>        bySingleLocus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">140</span>, <span class="fl">172</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"VAF of IDH2 at R140 and R172"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <p>By specifying multiple genes and single coordinate against the genes’
 products, the <code><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF()</a></code> would plot distribution of VAF in
 selected loci of the gene.</p>
@@ -652,7 +655,7 @@ selected loci of the gene.</p>
 <span><span class="fu"><a href="https://rdrr.io/pkg/bamSliceR/man/plotVAF.html" class="external-link">plotVAF</a></span> <span class="op">(</span><span class="va">tallied_reads_vrinfo_baminfo_annotated_gr</span>, </span>
 <span>         genes <span class="op">=</span> <span class="va">histone_genes</span>, </span>
 <span>         bySingleLocus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"VAF of Histone 3 genes at K27"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="covert-to-maf-file-format">Covert to MAF file format<a class="anchor" aria-label="anchor" href="#covert-to-maf-file-format"></a>
@@ -1208,7 +1211,7 @@ t_{\text{depth_alt}} \sim \text{Binom}(t_{\text{depth_total}}, g_{\text{VAF}})
 <span><span class="fu">plotHistAsDist</span><span class="op">(</span><span class="va">theta_df</span>, </span>
 <span>               binwidth <span class="op">=</span> <span class="fl">0.001</span>, </span>
 <span>               i <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">theta_df</span><span class="op">)</span> <span class="op">==</span> <span class="st">"theta"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
+<p><img src="BamSliceR.Bioc2024_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 <div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="va">Nrep</span>, <span class="fl">258</span>, <span class="va">g_VAF</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">10</span><span class="op">)</span> <span class="op">/</span> <span class="va">Nrep</span></span></code></pre></div>
